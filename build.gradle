@@ -79,6 +79,17 @@ bootRun {
     String springProfilesActive = 'spring.profiles.active'
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
+
+
+sourceSets {
+  main {
+    resources {
+      srcDir 'grails-app/migrations'
+    }
+  }
+}
+
+
 // enable if you wish to package this plugin as a standalone application
 bootRepackage.enabled = false
 grailsPublish {
@@ -92,4 +103,16 @@ grailsPublish {
     title = "My Plugin"
     desc = "Full plugin description"
     developers = [johndoe:"John Doe"]
+}
+
+publishing {
+  repositories {
+    maven {
+      url "http://nexus.k-int.com/content/repositories/releases/"
+      credentials {
+        username project.hasProperty('knowintNexusUser') ? knowintNexusUser :''
+        password project.hasProperty('knowintNexusPass') ? knowintNexusPass :''
+      }
+    }
+  }
 }
