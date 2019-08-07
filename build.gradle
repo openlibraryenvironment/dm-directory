@@ -92,19 +92,8 @@ sourceSets {
 
 // enable if you wish to package this plugin as a standalone application
 bootRepackage.enabled = false
-grailsPublish {
-    // TODO: Provide values here
-    user = 'user'
-    key = 'key'
-    githubSlug = 'foo/bar'
-    license {
-        name = 'Apache-2.0'
-    }
-    title = "My Plugin"
-    desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
-}
 
+// Props can be set in ~/.gradle/gradle.properties
 publishing {
   repositories {
     maven {
