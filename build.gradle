@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "0.0.10"
+version "0.0.9-graph"
 group "org.olf.reshare.dm.directory"
 
 apply plugin:"eclipse"
