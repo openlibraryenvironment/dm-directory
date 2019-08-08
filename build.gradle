@@ -11,8 +11,8 @@ buildscript {
     }
 }
 
-version "0.1"
-group "dm.directory"
+version "0.0.9"
+group "org.olf.reshare.dm.directory"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
