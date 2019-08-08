@@ -7,7 +7,7 @@ import com.k_int.web.toolkit.tags.Tag
 import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
-
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 
 class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
@@ -27,7 +27,10 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   @Defaults(['Managed', 'Reference' ])
   RefdataValue status
 
-  static graphql = true
+  // static graphql = true
+  static graphql = GraphQLMapping.build {
+    exclude('customProperties')
+  }
 
   static hasMany = [
     tags:Tag,

@@ -8,6 +8,7 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 
 /**
@@ -42,6 +43,10 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
   val
 })
 class Service  implements CustomProperties,MultiTenant<Service>  {
+
+  static graphql = GraphQLMapping.build {
+    exclude('customProperties')
+  }
 
   String id
   String name

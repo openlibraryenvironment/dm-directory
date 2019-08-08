@@ -8,6 +8,7 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 /**
  * Some special sauce to allow us to transparently state the authority as a string instead of an object
@@ -50,6 +51,10 @@ class NamingAuthority implements MultiTenant<NamingAuthority>  {
 
   String id
   String symbol
+
+  static graphql = GraphQLMapping.build {
+    exclude('customProperties')
+  }
 
   static hasMany = [
   ]

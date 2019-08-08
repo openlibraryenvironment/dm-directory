@@ -7,6 +7,7 @@ import com.k_int.web.toolkit.tags.Tag
 import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
+import org.grails.gorm.graphql.entity.dsl.GraphQLMapping
 
 /**
  * The relationship between a service and a directory entry
@@ -19,7 +20,10 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
 
   String accountDetails
 
-  static graphql = true
+  static graphql = GraphQLMapping.build {
+    exclude('customProperties')
+  }
+
 
 
 

@@ -8,7 +8,10 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 
+
 class Symbol  implements MultiTenant<Symbol>  {
+
+  static graphql = true
 
   String id
   String symbol
