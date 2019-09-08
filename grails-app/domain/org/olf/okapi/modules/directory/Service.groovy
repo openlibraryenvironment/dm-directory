@@ -83,8 +83,8 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
 
   static constraints = {
                 name(nullable:true, blank:false)
-                type(nullable:false, blank:false)
+                type(nullable:false)
              address(nullable:false, blank:false)
-    businessFunction(nullable:true, blank:false)
+    businessFunction(nullable:true)
   }
 }
