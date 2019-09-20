@@ -36,7 +36,7 @@ class Announcement  implements MultiTenant<Announcement>  {
   }
 
   static constraints = {
-             owner(nullable:false, blank:false)
+             owner(nullable:true, blank:false)
       announceDate(nullable:false, blank:false)
         expiryDate(nullable:true, blank:false)
               code(nullable:true, blank:false)

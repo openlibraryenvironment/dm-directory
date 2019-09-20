@@ -32,7 +32,7 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
 
   static constraints = {
            service(nullable:false, blank:false)
-     accountHolder(nullable:false, blank:false)
+     accountHolder(nullable:true, blank:false)
      accountDetails(nullable:true, blank:false)
   }
 }
