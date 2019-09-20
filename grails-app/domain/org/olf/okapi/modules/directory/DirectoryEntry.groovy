@@ -7,9 +7,30 @@ import com.k_int.web.toolkit.tags.Tag
 import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
+import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 
+@BindUsingWhenRef({ obj, propName, source ->
 
+  DirectoryEntry val = null;
 
+  def data = source.getAt(propName)
+
+  // If the data is asking for null binding then ensure we return here.
+  if (data == null) {
+    return null
+  }
+
+  if ( data instanceof Map ) {
+    if ( data.id ) {
+      val = DirectoryEntry.read(data.id);
+    }
+    else if ( data.slug ) {
+      val = DirectoryEntry.findBySlug(data.address) ?: new DirectoryEntry(data).save(flush:true, failOnError:true)
+    }
+  }
+
+  val
+})
 class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 
   String id
@@ -17,6 +38,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String slug
   String description
   String foafUrl
+  String entryUrl
   Long foafTimestamp
   DirectoryEntry parent
 
@@ -56,6 +78,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
              parent column:'de_parent'
              status column:'de_status_fk'
             foafUrl column:'de_foaf_url'
+           entryUrl column:'de_entry_url'
       foafTimestamp column:'de_foaf_timestamp'
   }
 
@@ -66,6 +89,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
            parent(nullable:true, blank:false)
            status(nullable:true, blank:false)
           foafUrl(nullable:true, blank:false)
+         entryUrl(nullable:true, blank:false)
     foafTimestamp(nullable:true, blank:false)
   }
 
