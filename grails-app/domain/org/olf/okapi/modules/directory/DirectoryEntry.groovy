@@ -86,11 +86,11 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
              name(nullable:false, blank:false)
              slug(nullable:true, blank:false)
       description(nullable:true, blank:false)
-           parent(nullable:true, blank:false)
-           status(nullable:true, blank:false)
+           parent(nullable:true)
+           status(nullable:true)
           foafUrl(nullable:true, blank:false)
          entryUrl(nullable:true, blank:false)
-    foafTimestamp(nullable:true, blank:false)
+    foafTimestamp(nullable:true)
   }
 
   /**
