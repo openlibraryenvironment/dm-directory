@@ -16,7 +16,7 @@ import grails.web.databinding.DataBindingUtils
 
   DirectoryEntry val = null;
 
-  println("DirectoryEntry::@BindUsingWhenRef");
+  println("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})");
 
   def data = source.getAt(propName)
 
@@ -27,6 +27,7 @@ import grails.web.databinding.DataBindingUtils
 
   if ( data instanceof Map ) {
     if ( data.id ) {
+      println("ID supplied for Directory entry - read it");
       val = DirectoryEntry.read(data.id);
     }
     else if ( data.slug ) {
@@ -38,14 +39,18 @@ import grails.web.databinding.DataBindingUtils
         if ( propName == 'units' ) {
           println("Add new directory entry to parent units");
           source.addToUnits(val);
-          source.parent = obj
+          // source.parent = obj
         }
       }
     }
   }
+  else {
+    println("Data is instanceof ${data?.class?.name} - skip");
+  }
 
   // Now allow binding of the properties set for that directory entry
   if (val) {
+    println("Binding data to object");
     if (data instanceof Map ) {
       DataBindingUtils.bindObjectToInstance(val, data)
     }
@@ -164,5 +169,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
       result = name
     }
     return result;
+  }
+
+  public String toString() {
+    return "DirectoryEntry ${name} (${id?:'Unsaved'})".toString()
   }
 }

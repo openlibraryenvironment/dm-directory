@@ -18,8 +18,7 @@ import grails.web.databinding.DataBindingUtils
  */
 @BindUsingWhenRef({ obj, propName, source ->
 
-  //@BindUsingWhenRef(org.olf.okapi.modules.directory.Symbol : (unsaved), authority, grails.databinding.SimpleMapDataBindingSource@5d0e003a
-  //Result null
+  println("Service::@BindUsingWhenRef ${obj} ${propName} ${source}");
 
   Service val = null;
 

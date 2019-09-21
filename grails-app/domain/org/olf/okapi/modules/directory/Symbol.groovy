@@ -15,6 +15,8 @@ import grails.web.databinding.DataBindingUtils
 
   Symbol val = null;
 
+  println("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source}");
+
   def data = source.getAt(propName)
 
   // If the data is asking for null binding then ensure we return here.
@@ -22,7 +24,6 @@ import grails.web.databinding.DataBindingUtils
     return null
   }
 
-  println("Symbol::@BindUsingWhenRef");
 
 
   if ( data instanceof Map ) {
@@ -42,7 +43,7 @@ import grails.web.databinding.DataBindingUtils
         if ( propName == 'symbols' ) {
           println("Add new directory entry to parent units");
           source.addToSymbols(val);
-          val.owner = obj
+          // val.owner = obj
         }
       }
     }

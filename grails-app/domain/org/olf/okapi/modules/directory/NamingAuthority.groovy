@@ -14,8 +14,7 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
  */
 @BindUsingWhenRef({ obj, propName, source ->
 
-  //@BindUsingWhenRef(org.olf.okapi.modules.directory.Symbol : (unsaved), authority, grails.databinding.SimpleMapDataBindingSource@5d0e003a
-  //Result null
+  println("NamingAuthority::@BindUsingWhenRef ${obj} ${propName} ${source}");
 
   NamingAuthority val = null;
 
