@@ -16,13 +16,13 @@ import grails.web.databinding.DataBindingUtils
  * symbols from multiple different institutions. This class then models the service
  * itself.
  */
-@BindUsingWhenRef({ obj, propName, source ->
+@BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   println("Service::@BindUsingWhenRef ${obj} ${propName} ${source}");
 
   Service val = null;
 
-  def data = source.getAt(propName)
+  def data = isCollection ? source : source[propName]
 
   // If the data is asking for null binding then ensure we return here.
   if (data == null) {

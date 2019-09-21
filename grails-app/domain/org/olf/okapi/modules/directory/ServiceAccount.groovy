@@ -14,11 +14,11 @@ import grails.web.databinding.DataBindingUtils
  * The relationship between a service and a directory entry
  */
 
-@BindUsingWhenRef({ obj, propName, source ->
+@BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   ServiceAccount val = null;
 
-  def data = source.getAt(propName)
+  def data = isCollection ? source : source[propName]
 
   // If the data is asking for null binding then ensure we return here.
   if (data == null) {

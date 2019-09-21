@@ -12,13 +12,17 @@ import groovy.util.logging.Log4j
 import grails.web.databinding.DataBindingUtils
 
 
-@BindUsingWhenRef({ obj, propName, source ->
+// Called when data binding wants to bind a variable of type DirectoryEntry to any domain
+// class. obj will be an instance of that class, propName will be the property name which has
+// type DirectoryEntry and source will be the source map.
+@BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   DirectoryEntry val = null;
 
   println("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})");
 
-  def data = source.getAt(propName)
+  // this isn't right when we a processing a property which is a collection
+  def data = isCollection ? source : source[propName]
 
   // If the data is asking for null binding then ensure we return here.
   if (data == null) {
@@ -30,7 +34,7 @@ import grails.web.databinding.DataBindingUtils
       println("ID supplied for Directory entry - read it");
       val = DirectoryEntry.read(data.id);
     }
-    else if ( data.slug ) {
+    else if ( data.slug != null ) {
       println("Looking up directory entry by slug ${data.slug}");
       val = DirectoryEntry.findBySlug(data.slug)
       if ( val == null ) {
@@ -55,6 +59,8 @@ import grails.web.databinding.DataBindingUtils
       DataBindingUtils.bindObjectToInstance(val, data)
     }
   }
+
+  println("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}");
 
   val
 })

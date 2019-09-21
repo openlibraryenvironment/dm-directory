@@ -12,13 +12,13 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 /**
  * Some special sauce to allow us to transparently state the authority as a string instead of an object
  */
-@BindUsingWhenRef({ obj, propName, source ->
+@BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   println("NamingAuthority::@BindUsingWhenRef ${obj} ${propName} ${source}");
 
   NamingAuthority val = null;
 
-  def data = source.getAt(propName)
+  def data = isCollection ? source : source[propName]
 
   // If the data is asking for null binding then ensure we return here.
   if (data == null) {

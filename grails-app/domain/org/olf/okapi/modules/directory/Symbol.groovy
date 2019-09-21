@@ -11,13 +11,13 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import groovy.util.logging.Log4j
 import grails.web.databinding.DataBindingUtils
 
-@BindUsingWhenRef({ obj, propName, source ->
+@BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   Symbol val = null;
 
   println("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source}");
 
-  def data = source.getAt(propName)
+  def data = isCollection ? source : source[propName]
 
   // If the data is asking for null binding then ensure we return here.
   if (data == null) {
