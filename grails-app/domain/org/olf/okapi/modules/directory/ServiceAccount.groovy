@@ -54,10 +54,7 @@ import grails.web.databinding.DataBindingUtils
   if ( val ) {
     println("Bind ServiceAccount properties using data ${val} ${data}");
     def dbr = DataBindingUtils.bindObjectToInstance(val, data)
-    println("After save ${val?.service}");
-    if ( dbr ) {
-      println("Data binding result: ${dbr}");
-    }
+    println("Check value of service property After bind - should not be null ${val?.service} if ${data.service} is present");
   }
   else {
     println("-- val is null, can't merge ${data}");
