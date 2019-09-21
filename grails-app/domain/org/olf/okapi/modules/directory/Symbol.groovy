@@ -34,7 +34,7 @@ class Symbol  implements MultiTenant<Symbol>  {
   }
 
   static constraints = {
-              owner(nullable:true)
+              owner(nullable:false)
           authority(nullable:false)
              symbol(nullable:false, blank:false)
            priority(nullable:true, blank:false)

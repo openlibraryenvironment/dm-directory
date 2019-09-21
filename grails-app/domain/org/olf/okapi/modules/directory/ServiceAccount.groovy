@@ -29,10 +29,13 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = ServiceAccount.read(data.id);
     }
     else if ( data.slug ) {
+      println("Lookup existing service account by slug ${data.slug}");
       val = ServiceAccount.findBySlug(data.slug)
       if ( val == null ) {
+        println("Create new SA ${data} ${source} ${source?.id}...");
         val = new ServiceAccount(data).save(flush:true, failOnError:true)
         if ( propName == 'services' ) {
+          println("Add new SA to services list");
           source.addToServices(val);
         }
       }
@@ -65,7 +68,7 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
   static constraints = {
               slug(nullable:true, blank:false)
            service(nullable:false, blank:false)
-     accountHolder(nullable:true, blank:false)
+     accountHolder(nullable:false, blank:false)
      accountDetails(nullable:true, blank:false)
   }
 }

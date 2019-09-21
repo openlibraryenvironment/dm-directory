@@ -25,10 +25,13 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = DirectoryEntry.read(data.id);
     }
     else if ( data.slug ) {
+      println("Looking up directory entry by slug ${data.slug}");
       val = DirectoryEntry.findBySlug(data.slug)
       if ( val == null ) {
+        println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
         val = new DirectoryEntry(data).save(flush:true, failOnError:true)
         if ( propName == 'units' ) {
+          println("Add new directory entry to parent units");
           source.addToUnits(val);
         }
       }
