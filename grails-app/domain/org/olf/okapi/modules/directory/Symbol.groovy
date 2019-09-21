@@ -38,10 +38,10 @@ import grails.web.databinding.DataBindingUtils
         val = qr.get(0);
 
       if ( val == null ) {
-        println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
+        println("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
         val = new Symbol(data)
         if ( propName == 'symbols' ) {
-          println("Add new directory entry to parent units");
+          println("Add new symbol to entry");
           obj.addToSymbols(val);
           // val.owner = obj
         }
