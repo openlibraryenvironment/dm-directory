@@ -42,7 +42,7 @@ import grails.web.databinding.DataBindingUtils
         val = new DirectoryEntry()
         if ( propName == 'units' ) {
           println("Add new directory entry to parent units");
-          source.addToUnits(val);
+          obj.addToUnits(val);
           // source.parent = obj
         }
       }

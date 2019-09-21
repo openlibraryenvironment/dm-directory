@@ -42,7 +42,7 @@ import grails.web.databinding.DataBindingUtils
         val = new Symbol()
         if ( propName == 'symbols' ) {
           println("Add new directory entry to parent units");
-          source.addToSymbols(val);
+          obj.addToSymbols(val);
           // val.owner = obj
         }
       }

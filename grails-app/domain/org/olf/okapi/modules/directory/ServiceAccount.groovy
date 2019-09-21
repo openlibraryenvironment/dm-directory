@@ -38,7 +38,7 @@ import grails.web.databinding.DataBindingUtils
         val = new ServiceAccount()
         if ( propName == 'services' ) {
           println("Add new SA to services list");
-          source.addToServices(val);
+          obj.addToServices(val);
           // source.accountHolder = obj;
         }
       }
