@@ -34,7 +34,7 @@ import grails.web.databinding.DataBindingUtils
       val = Service.read(data.id);
     }
     else if ( data.address ) {
-      val = Service.findByAddress(data.address) ?: new Service()
+      val = Service.findByAddress(data.address) ?: new Service(address:data.address)
     }
   }
 

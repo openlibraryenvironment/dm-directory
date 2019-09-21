@@ -37,6 +37,12 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
     val = NamingAuthority.findBySymbol(data) ?: new NamingAuthority(symbol:data)
   }
 
+  if ( val ) {
+    if ( data instanceof Map ) {
+      DataBindingUtils.bindObjectToInstance(val, data)
+    }
+  }
+
   val
 })
 class NamingAuthority implements MultiTenant<NamingAuthority>  {

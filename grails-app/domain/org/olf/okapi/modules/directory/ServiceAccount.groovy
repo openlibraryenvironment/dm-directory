@@ -35,12 +35,12 @@ import grails.web.databinding.DataBindingUtils
       println("Lookup existing service account by slug ${data.slug}");
       val = ServiceAccount.findBySlug(data.slug)
       if ( val == null ) {
-        println("Create new SA ${data} ${source} ${source?.id}...");
+        println("Create new SA ${data} obj:${obj} id:${source?.id}...");
         // Create the account, but use cascade saving so that we get the ID of the parent
         // val = new ServiceAccount(data)
 
         // Try recursively calling the bind here to do the right thing
-        val = new ServiceAccount()
+        val = new ServiceAccount(slug:data.slug)
 
         if ( propName == 'services' ) {
           println("Add new SA to services list");
@@ -52,7 +52,15 @@ import grails.web.databinding.DataBindingUtils
   }
 
   if ( val ) {
-    DataBindingUtils.bindObjectToInstance(val, data)
+    println("Bind ServiceAccount properties using data ${val} ${data}");
+    def dbr = DataBindingUtils.bindObjectToInstance(val, data)
+    println("After save ${val?.service}");
+    if ( dbr ) {
+      println("Data binding result: ${dbr}");
+    }
+  }
+  else {
+    println("-- val is null, can't merge ${data}");
   }
 
   val
