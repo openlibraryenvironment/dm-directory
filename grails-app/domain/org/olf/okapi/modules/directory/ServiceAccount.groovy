@@ -8,6 +8,7 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
+import grails.web.databinding.DataBindingUtils
 
 /**
  * The relationship between a service and a directory entry
@@ -57,13 +58,14 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
 
   String id
   String slug
-  Service service
-  DirectoryEntry accountHolder
-
   String accountDetails
 
   static graphql = true
 
+  static belongsTo = [
+    service: Service
+    accountHolder: DirectoryEntry
+  ]
 
 
   static mapping = {

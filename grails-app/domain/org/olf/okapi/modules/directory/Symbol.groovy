@@ -9,6 +9,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import groovy.util.logging.Log4j
+import grails.web.databinding.DataBindingUtils
 
 @BindUsingWhenRef({ obj, propName, source ->
 
@@ -20,6 +21,9 @@ import groovy.util.logging.Log4j
   if (data == null) {
     return null
   }
+
+  println("Symbol::@BindUsingWhenRef");
+
 
   if ( data instanceof Map ) {
     if ( data.id ) {

@@ -9,11 +9,14 @@ import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import groovy.util.logging.Log4j
+import grails.web.databinding.DataBindingUtils
 
 
 @BindUsingWhenRef({ obj, propName, source ->
 
   DirectoryEntry val = null;
+
+  println("DirectoryEntry::@BindUsingWhenRef");
 
   def data = source.getAt(propName)
 
