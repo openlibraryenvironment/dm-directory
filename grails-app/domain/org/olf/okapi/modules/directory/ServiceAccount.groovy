@@ -17,6 +17,8 @@ import grails.web.databinding.DataBindingUtils
 @BindUsingWhenRef({ obj, propName, source, isCollection ->
 
   ServiceAccount val = null;
+  println("ServiceAccount::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
+
 
   def data = isCollection ? source : source[propName]
 

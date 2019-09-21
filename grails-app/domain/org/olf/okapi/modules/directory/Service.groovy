@@ -18,7 +18,7 @@ import grails.web.databinding.DataBindingUtils
  */
 @BindUsingWhenRef({ obj, propName, source, isCollection ->
 
-  println("Service::@BindUsingWhenRef ${obj} ${propName} ${source}");
+  println("Service::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
 
   Service val = null;
 
@@ -44,6 +44,8 @@ import grails.web.databinding.DataBindingUtils
       DataBindingUtils.bindObjectToInstance(val, data)
     }
   }
+
+  println("Service::@BindUsingWhenRef returning ${val}");
 
   val
 })
