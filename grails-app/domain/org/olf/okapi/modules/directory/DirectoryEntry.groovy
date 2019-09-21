@@ -89,7 +89,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   ]
 
   static belongsTo = [
-    DirectoryEntry parent
+    parent: DirectoryEntry
   ]
 
   static mapping = {
