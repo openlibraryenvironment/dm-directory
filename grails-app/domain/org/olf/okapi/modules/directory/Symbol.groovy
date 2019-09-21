@@ -39,7 +39,10 @@ import grails.web.databinding.DataBindingUtils
 
       if ( val == null ) {
         println("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        val = new Symbol(data)
+        // val = new Symbol(data)
+        // Try recursively calling the bind here to do the right thing
+        val = new Symbol()
+
         if ( propName == 'symbols' ) {
           println("Add new symbol to entry");
           obj.addToSymbols(val);
@@ -47,6 +50,10 @@ import grails.web.databinding.DataBindingUtils
         }
       }
     }
+  }
+
+  if ( val ) {
+    DataBindingUtils.bindObjectToInstance(val, data)
   }
 
   val

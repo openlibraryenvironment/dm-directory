@@ -35,7 +35,11 @@ import grails.web.databinding.DataBindingUtils
       if ( val == null ) {
         println("Create new SA ${data} ${source} ${source?.id}...");
         // Create the account, but use cascade saving so that we get the ID of the parent
-        val = new ServiceAccount(data)
+        // val = new ServiceAccount(data)
+
+        // Try recursively calling the bind here to do the right thing
+        val = new ServiceAccount()
+
         if ( propName == 'services' ) {
           println("Add new SA to services list");
           obj.addToServices(val);
@@ -43,6 +47,10 @@ import grails.web.databinding.DataBindingUtils
         }
       }
     }
+  }
+
+  if ( val ) {
+    DataBindingUtils.bindObjectToInstance(val, data)
   }
 
   val
