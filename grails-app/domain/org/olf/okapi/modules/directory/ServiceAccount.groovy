@@ -35,7 +35,7 @@ import grails.web.databinding.DataBindingUtils
       if ( val == null ) {
         println("Create new SA ${data} ${source} ${source?.id}...");
         // Create the account, but use cascade saving so that we get the ID of the parent
-        val = new ServiceAccount()
+        val = new ServiceAccount(data)
         if ( propName == 'services' ) {
           println("Add new SA to services list");
           obj.addToServices(val);

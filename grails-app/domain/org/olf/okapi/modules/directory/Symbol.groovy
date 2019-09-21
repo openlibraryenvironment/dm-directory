@@ -39,7 +39,7 @@ import grails.web.databinding.DataBindingUtils
 
       if ( val == null ) {
         println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        val = new Symbol()
+        val = new Symbol(data)
         if ( propName == 'symbols' ) {
           println("Add new directory entry to parent units");
           obj.addToSymbols(val);

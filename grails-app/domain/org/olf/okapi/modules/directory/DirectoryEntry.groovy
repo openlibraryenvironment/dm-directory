@@ -39,7 +39,7 @@ import grails.web.databinding.DataBindingUtils
       val = DirectoryEntry.findBySlug(data.slug)
       if ( val == null ) {
         println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        val = new DirectoryEntry()
+        val = new DirectoryEntry(data)
         if ( propName == 'units' ) {
           println("Add new directory entry to parent units");
           obj.addToUnits(val);
