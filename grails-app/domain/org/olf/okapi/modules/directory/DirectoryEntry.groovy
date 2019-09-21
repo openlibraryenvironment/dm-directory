@@ -59,7 +59,6 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String foafUrl
   String entryUrl
   Long foafTimestamp
-  DirectoryEntry parent
 
   /**
    * DirectoryEntries can be managed here, or just stored for reference. Managed entries can be accessed via
@@ -87,6 +86,10 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     services: 'accountHolder',
     announcements: 'owner',
     addresses: 'owner',
+  ]
+
+  static belongsTo = [
+    DirectoryEntry parent
   ]
 
   static mapping = {
