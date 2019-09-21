@@ -52,14 +52,6 @@ import grails.web.databinding.DataBindingUtils
     println("Data is instanceof ${data?.class?.name} - skip");
   }
 
-  // Now allow binding of the properties set for that directory entry
-  if (val) {
-    println("Binding data to object");
-    if (data instanceof Map ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
-    }
-  }
-
   println("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}");
 
   val

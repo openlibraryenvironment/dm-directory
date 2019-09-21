@@ -49,13 +49,6 @@ import grails.web.databinding.DataBindingUtils
     }
   }
 
-  // Now allow binding of the properties set for that directory entry
-  if (val) {
-    if (data instanceof Map ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
-    }
-  }
-
   val
 })
 class Symbol  implements MultiTenant<Symbol>  {
