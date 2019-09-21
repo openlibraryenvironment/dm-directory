@@ -35,7 +35,14 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = Service.read(data.id);
     }
     else if ( data.address ) {
-      val = Service.findByAddress(data.address) ?: new Service(data).save(flush:true, failOnError:true)
+      val = Service.findByAddress(data.address) ?: new Service()
+    }
+  }
+
+  // Now allow binding of the properties set for that directory entry
+  if (val) {
+    if (data instanceof Map ) {
+      DataBindingUtils.bindObjectToInstance(val, data)
     }
   }
 

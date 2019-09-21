@@ -33,12 +33,20 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = ServiceAccount.findBySlug(data.slug)
       if ( val == null ) {
         println("Create new SA ${data} ${source} ${source?.id}...");
-        val = new ServiceAccount(data).save(flush:true, failOnError:true)
+        // Create the account, but use cascade saving so that we get the ID of the parent
+        val = new ServiceAccount()
         if ( propName == 'services' ) {
           println("Add new SA to services list");
           source.addToServices(val);
         }
       }
+    }
+  }
+
+ // Now allow binding of the properties set for that directory entry
+  if (val) {
+    if (data instanceof Map ) {
+      DataBindingUtils.bindObjectToInstance(val, data)
     }
   }
 

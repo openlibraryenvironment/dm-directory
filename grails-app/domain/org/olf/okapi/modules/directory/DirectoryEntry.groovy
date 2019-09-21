@@ -8,6 +8,8 @@ import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
+import groovy.util.logging.Log4j
+
 
 @BindUsingWhenRef({ obj, propName, source ->
 
@@ -29,12 +31,19 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = DirectoryEntry.findBySlug(data.slug)
       if ( val == null ) {
         println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        val = new DirectoryEntry(data).save(flush:true, failOnError:true)
+        val = new DirectoryEntry()
         if ( propName == 'units' ) {
           println("Add new directory entry to parent units");
           source.addToUnits(val);
         }
       }
+    }
+  }
+
+  // Now allow binding of the properties set for that directory entry
+  if (val) {
+    if (data instanceof Map ) {
+      DataBindingUtils.bindObjectToInstance(val, data)
     }
   }
 
