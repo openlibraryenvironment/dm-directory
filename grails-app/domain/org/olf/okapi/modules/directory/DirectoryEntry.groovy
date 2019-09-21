@@ -35,6 +35,7 @@ import groovy.util.logging.Log4j
         if ( propName == 'units' ) {
           println("Add new directory entry to parent units");
           source.addToUnits(val);
+          source.parent = obj
         }
       }
     }

@@ -38,6 +38,7 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
         if ( propName == 'services' ) {
           println("Add new SA to services list");
           source.addToServices(val);
+          source.accountHolder = obj;
         }
       }
     }

@@ -38,6 +38,7 @@ import groovy.util.logging.Log4j
         if ( propName == 'symbols' ) {
           println("Add new directory entry to parent units");
           source.addToSymbols(val);
+          val.owner = obj
         }
       }
     }
