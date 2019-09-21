@@ -25,7 +25,13 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
       val = DirectoryEntry.read(data.id);
     }
     else if ( data.slug ) {
-      val = DirectoryEntry.findBySlug(data.address) ?: new DirectoryEntry(data).save(flush:true, failOnError:true)
+      val = DirectoryEntry.findBySlug(data.slug)
+      if ( val == null ) {
+        val = new DirectoryEntry(data).save(flush:true, failOnError:true)
+        if ( propName == 'units' ) {
+          source.addToUnits(val);
+        }
+      }
     }
   }
 
