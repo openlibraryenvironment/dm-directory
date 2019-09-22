@@ -7,7 +7,6 @@ import com.k_int.web.toolkit.refdata.RefdataValue
 import com.k_int.web.toolkit.tags.Tag
 
 import grails.gorm.MultiTenant
-import grails.web.databinding.DataBindingUtils
 
 
 // Called when data binding wants to bind a variable of type DirectoryEntry to any domain
