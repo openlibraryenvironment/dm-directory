@@ -55,10 +55,12 @@ import java.util.Collections;
   if ( val != null ) {
     println("Bind ServiceAccount properties using data ${val} ${data}");
 
-    // We're going to try ONLY binding the service to see if thats what is causing the problem
-    def dbr = DataBindingUtils.bindObjectToInstance(val, data, ['service'],Collections.emptyList(), null)
+    // We're going to try ONLY binding the service to see if thats what is causing the problem - this still gives us a NULL service
+    // def dbr = DataBindingUtils.bindObjectToInstance(val, data, ['service'],Collections.emptyList(), null)
 
-    println("Check value of service property After bind - should not be null ${val?.service} if ${data.service} is present");
+    def dbr = DataBindingUtils.bindObjectToInstance(val, data)
+    
+    println("Check value of service property After bind: ${val?.service} - should not be null if ${data.service} is present - data binding result is ${dbr}");
   }
   else {
     println("-- val is null, can't merge ${data}");
