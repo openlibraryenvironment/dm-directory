@@ -60,7 +60,7 @@ import java.util.Collections;
 
     def dbr = DataBindingUtils.bindObjectToInstance(val, data)
     
-    println("Check value of service property After bind: ${val?.service} - should not be null if ${data.service} is present - data binding result is ${dbr}");
+    println("Check value of service property After bind: ${val?.service} (owner=${val.accountHolder})- should not be null if ${data.service} is present - data binding result is ${dbr}");
   }
   else {
     println("-- val is null, can't merge ${data}");
