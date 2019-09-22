@@ -11,7 +11,7 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import groovy.util.logging.Log4j
 import grails.web.databinding.DataBindingUtils
 
-@BindUsingWhenRef({ obj, propName, source, isCollection ->
+@BindUsingWhenRef({ obj, propName, source, isCollection = false ->
   CustomBinders.bindSymbol(obj, propName, source, isCollection)
 })
 class Symbol  implements MultiTenant<Symbol>  {

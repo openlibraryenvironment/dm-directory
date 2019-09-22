@@ -13,7 +13,7 @@ import grails.web.databinding.DataBindingUtils
 // Called when data binding wants to bind a variable of type DirectoryEntry to any domain
 // class. obj will be an instance of that class, propName will be the property name which has
 // type DirectoryEntry and source will be the source map.
-@BindUsingWhenRef({ obj, propName, source, isCollection ->
+@BindUsingWhenRef({ obj, propName, source, isCollection = false ->
   CustomBinders.bindDirectoryEntry(obj, propName, source, isCollection)
 })
 class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {

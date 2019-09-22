@@ -16,7 +16,7 @@ import grails.web.databinding.DataBindingUtils
  * symbols from multiple different institutions. This class then models the service
  * itself.
  */
-@BindUsingWhenRef({ obj, propName, source, isCollection ->
+@BindUsingWhenRef({ obj, propName, source, isCollection = false ->
 
   println("Service::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
 

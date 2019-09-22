@@ -17,7 +17,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor
  * The relationship between a service and a directory entry
  */
 
-@BindUsingWhenRef({ obj, propName, source, isCollection ->
+@BindUsingWhenRef({ obj, propName, source, isCollection = false ->
   CustomBinders.bindServiceAccount(obj, propName, source, isCollection)
 })
 class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
