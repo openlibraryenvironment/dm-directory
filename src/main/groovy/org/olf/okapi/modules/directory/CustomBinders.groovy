@@ -58,11 +58,18 @@ class CustomBinders {
       if ( data.id ) {
         val = Symbol.read(data.id)
       }
-      else if ( ( data.symbol != null ) && ( data.authority?.symbol != null ) ) {
+      else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
+
+        def qr = null;
+
+        if ( data.authority instanceof String ) {
+          qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
+        }
+        else if ( data.authority.symbol != null ) {
+          qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
+        }
   
-        def qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
-  
-        if ( qr.size() == 1 )
+        if ( qr?.size() == 1 )
           val = qr.get(0)
   
         if ( val == null ) {
