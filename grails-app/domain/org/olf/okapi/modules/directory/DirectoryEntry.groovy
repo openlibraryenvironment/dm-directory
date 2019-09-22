@@ -1,14 +1,12 @@
 package org.olf.okapi.modules.directory
 
-import grails.gorm.MultiTenant
 import com.k_int.web.toolkit.custprops.CustomProperties
-import com.k_int.web.toolkit.custprops.types.CustomPropertyContainer
-import com.k_int.web.toolkit.tags.Tag
-import grails.gorm.MultiTenant
-import com.k_int.web.toolkit.refdata.RefdataValue;
-import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
-import groovy.util.logging.Log4j
+import com.k_int.web.toolkit.refdata.Defaults
+import com.k_int.web.toolkit.refdata.RefdataValue
+import com.k_int.web.toolkit.tags.Tag
+
+import grails.gorm.MultiTenant
 import grails.web.databinding.DataBindingUtils
 
 
@@ -16,48 +14,7 @@ import grails.web.databinding.DataBindingUtils
 // class. obj will be an instance of that class, propName will be the property name which has
 // type DirectoryEntry and source will be the source map.
 @BindUsingWhenRef({ obj, propName, source, isCollection ->
-
-  DirectoryEntry val = null;
-
-  println("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})");
-
-  // this isn't right when we a processing a property which is a collection
-  def data = isCollection ? source : source[propName]
-
-  // If the data is asking for null binding then ensure we return here.
-  if (data == null) {
-    return null
-  }
-
-  if ( data instanceof Map ) {
-    if ( data.id ) {
-      println("ID supplied for Directory entry - read it");
-      val = DirectoryEntry.read(data.id);
-    }
-    else if ( data.slug != null ) {
-      println("Looking up directory entry by slug ${data.slug}");
-      val = DirectoryEntry.findBySlug(data.slug)
-      if ( val == null ) {
-        println("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        val = new DirectoryEntry(name:data.name, slug:data.slug)
-        if ( propName == 'units' ) {
-          println("Add new directory entry to parent units");
-          obj.addToUnits(val);
-          // source.parent = obj
-        }
-      }
-    }
-  }
-  else {
-    println("Data is instanceof ${data?.class?.name} - skip");
-  }
-
-  println("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}");
-  if ( val ) {
-    DataBindingUtils.bindObjectToInstance(val, data)
-  }
-
-  val
+  CustomBinders.bindDirectoryEntry(obj, propName, source, isCollection)
 })
 class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 

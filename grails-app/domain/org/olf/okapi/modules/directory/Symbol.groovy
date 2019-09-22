@@ -12,51 +12,7 @@ import groovy.util.logging.Log4j
 import grails.web.databinding.DataBindingUtils
 
 @BindUsingWhenRef({ obj, propName, source, isCollection ->
-
-  Symbol val = null;
-
-  println("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source}");
-
-  def data = isCollection ? source : source[propName]
-
-  // If the data is asking for null binding then ensure we return here.
-  if (data == null) {
-    return null
-  }
-
-
-
-  if ( data instanceof Map ) {
-    if ( data.id ) {
-      val = Symbol.read(data.id);
-    }
-    else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
-
-      def qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
-
-      if ( qr.size() == 1 )
-        val = qr.get(0);
-
-      if ( val == null ) {
-        println("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}");
-        // val = new Symbol(data)
-        // Try recursively calling the bind here to do the right thing
-        val = new Symbol()
-
-        if ( propName == 'symbols' ) {
-          println("Add new symbol to entry");
-          obj.addToSymbols(val);
-          // val.owner = obj
-        }
-      }
-    }
-  }
-
-  if ( val ) {
-    DataBindingUtils.bindObjectToInstance(val, data)
-  }
-
-  val
+  CustomBinders.bindSymbol(obj, propName, source, isCollection)
 })
 class Symbol  implements MultiTenant<Symbol>  {
 
