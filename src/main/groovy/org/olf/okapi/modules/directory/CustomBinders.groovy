@@ -8,6 +8,40 @@ import groovy.util.logging.Slf4j
 @Slf4j
 class CustomBinders {
   
+  public static final bindNamingAuthority(final def obj, final String propName, final def source, final boolean isCollection) { 
+
+    log.debug ("NamingAuthority::@BindUsingWhenRef ${obj} ${propName} ${source}")
+
+    def data = isCollection ? source : source[propName]
+
+    // If the data is asking for null binding then ensure we return here.
+    if (data == null) {
+      return null
+    }
+
+    NamingAuthority val = null
+
+    if ( data instanceof Map ) {
+      if ( data.id ) {
+        val = NamingAuthority.read(data.id)
+      }
+      else if ( data.symbol ) {
+        val = NamingAuthority.findBySymbol(data.symbol) ?: new NamingAuthority(symbol:data.symbol)
+      }
+    }
+    else if ( data instanceof String ) {
+      val = NamingAuthority.findBySymbol(data) ?: new NamingAuthority(symbol:data)
+    }
+
+    if ( val ) {
+      if ( data instanceof Map ) {
+        DataBindingUtils.bindObjectToInstance(val, data)
+      }
+    }
+
+    val
+  }
+  
   public static final bindSymbol ( final def obj, final String propName, final def source, final boolean isCollection ) {
   
     log.debug ("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source}")

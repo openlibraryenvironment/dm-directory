@@ -13,37 +13,7 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
  * Some special sauce to allow us to transparently state the authority as a string instead of an object
  */
 @BindUsingWhenRef({ obj, propName, source, isCollection ->
-
-  println("NamingAuthority::@BindUsingWhenRef ${obj} ${propName} ${source}");
-
-  NamingAuthority val = null;
-
-  def data = isCollection ? source : source[propName]
-
-  // If the data is asking for null binding then ensure we return here.
-  if (data == null) {
-    return null
-  }
-
-  if ( data instanceof Map ) {
-    if ( data.id ) {
-      val = NamingAuthority.read(data.id);
-    }
-    else if ( data.symbol ) {
-      val = NamingAuthority.findBySymbol(data.symbol) ?: new NamingAuthority(symbol:data.symbol)
-    }
-  }
-  else if ( data instanceof String ) {
-    val = NamingAuthority.findBySymbol(data) ?: new NamingAuthority(symbol:data)
-  }
-
-  if ( val ) {
-    if ( data instanceof Map ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
-    }
-  }
-
-  val
+  CustomBinders.bindNamingAuthority(obj, propName, source, isCollection)
 })
 class NamingAuthority implements MultiTenant<NamingAuthority>  {
 
