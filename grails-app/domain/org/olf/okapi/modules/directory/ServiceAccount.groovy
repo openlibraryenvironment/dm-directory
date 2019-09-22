@@ -9,6 +9,7 @@ import com.k_int.web.toolkit.refdata.RefdataValue;
 import com.k_int.web.toolkit.refdata.Defaults;
 import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import grails.web.databinding.DataBindingUtils
+import java.util.Collections;
 
 /**
  * The relationship between a service and a directory entry
@@ -51,9 +52,12 @@ import grails.web.databinding.DataBindingUtils
     }
   }
 
-  if ( val ) {
+  if ( val != null ) {
     println("Bind ServiceAccount properties using data ${val} ${data}");
-    def dbr = DataBindingUtils.bindObjectToInstance(val, data)
+
+    // We're going to try ONLY binding the service to see if thats what is causing the problem
+    def dbr = DataBindingUtils.bindObjectToInstance(val, data, ['service'],Collections.emptyList(), null)
+
     println("Check value of service property After bind - should not be null ${val?.service} if ${data.service} is present");
   }
   else {
