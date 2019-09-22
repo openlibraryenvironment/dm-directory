@@ -18,6 +18,8 @@ class AddressLine  implements MultiTenant<AddressLine>  {
   RefdataValue type
   String value
 
+  Address owner
+
 
   static hasMany = [
   ]

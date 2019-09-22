@@ -73,11 +73,12 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
   String id
   String slug
   String accountDetails
+  Service service
+  DirectoryEntry accountHolder
 
   static graphql = true
 
   static belongsTo = [
-    service: Service,
     accountHolder: DirectoryEntry
   ]
 

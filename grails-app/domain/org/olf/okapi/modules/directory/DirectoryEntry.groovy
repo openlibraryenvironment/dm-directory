@@ -69,6 +69,8 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String entryUrl
   Long foafTimestamp
 
+  DirectoryEntry parent
+
   /**
    * DirectoryEntries can be managed here, or just stored for reference. Managed entries can be accessed via
    * a foaf type service.

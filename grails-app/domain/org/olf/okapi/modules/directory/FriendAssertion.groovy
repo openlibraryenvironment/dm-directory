@@ -12,6 +12,8 @@ import com.k_int.web.toolkit.refdata.Defaults;
 class FriendAssertion  implements MultiTenant<DirectoryEntry>  {
 
   String id
+  DirectoryEntry owner
+  DirectoryEntry friend_org
 
   static hasMany = [
   ]

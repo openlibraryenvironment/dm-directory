@@ -16,6 +16,8 @@ class Announcement  implements MultiTenant<Announcement>  {
   String code
   String description
 
+  DirectoryEntry owner
+
   static hasMany = [
   ]
 

@@ -63,6 +63,8 @@ class Symbol  implements MultiTenant<Symbol>  {
   String id
   String symbol
   String priority
+  DirectoryEntry owner
+  NamingAuthority authority
 
   static hasMany = [
   ]
@@ -71,8 +73,7 @@ class Symbol  implements MultiTenant<Symbol>  {
   ]
 
   static belongsTo = [
-    owner: DirectoryEntry,
-    authority: NamingAuthority
+    owner: DirectoryEntry
   ]
 
   static mapping = {
