@@ -1,7 +1,6 @@
 package org.olf.okapi.modules.directory
 
-import com.k_int.web.toolkit.databinding.BindUsingWhenRef
-
+import grails.util.GrailsNameUtils
 import grails.web.databinding.DataBindingUtils
 import groovy.util.logging.Slf4j
 
@@ -69,14 +68,10 @@ class CustomBinders {
         if ( val == null ) {
           log.debug ("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
           // val = new Symbol(data)
-          // Try recursively calling the bind here to do the right thing
           val = new Symbol()
   
-          if ( propName == 'symbols' ) {
-            log.debug("Add new symbol to entry")
-            obj.addToSymbols(val)
-            // val.owner = obj
-          }
+          log.debug("Add new symbol to entry")
+          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
         }
       }
     }
@@ -116,11 +111,8 @@ class CustomBinders {
           // Try recursively calling the bind here to do the right thing
           val = new ServiceAccount(slug:data.slug)
 
-          if ( propName == 'services' ) {
-            log.debug ("Add new SA to services list")
-            obj.addToServices(val)
-            // source.accountHolder = obj
-          }
+          log.debug ("Add new SA to ${propName} list")
+          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
         }
       }
     }
@@ -166,11 +158,8 @@ class CustomBinders {
         if ( val == null ) {
           log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
           val = new DirectoryEntry(name:data.name, slug:data.slug)
-          if ( propName == 'units' ) {
-            log.debug ("Add new directory entry to parent units")
-            obj.addToUnits(val)
-            // source.parent = obj
-          }
+          log.debug ("Add new directory entry to parent ${propName}")
+          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
         }
       }
     }
