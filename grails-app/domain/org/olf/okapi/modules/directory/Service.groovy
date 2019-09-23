@@ -63,6 +63,7 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
              'ISO18626',
              'GSM.SMTP', 
              'OAI-PMH', 
+             'NCIP', 
              'SRU', 
              'SRW'])
   RefdataValue type
