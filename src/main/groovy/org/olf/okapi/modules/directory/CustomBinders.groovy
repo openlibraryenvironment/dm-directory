@@ -23,6 +23,12 @@ class CustomBinders {
     if ( data instanceof Map ) {
       if ( data.id ) {
         val = NamingAuthority.read(data.id)
+        if ( val == null ) {
+          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+          // entry is not present yet - so create a new one with that ID
+          val = new NamingAuthority(id:data.id, symbol:data.symbol);
+        }
       }
       else if ( data.symbol ) {
         val = NamingAuthority.findBySymbol(data.symbol) ?: new NamingAuthority(symbol:data.symbol)
@@ -57,6 +63,12 @@ class CustomBinders {
     if ( data instanceof Map ) {
       if ( data.id ) {
         val = Symbol.read(data.id)
+        if ( val == null ) {
+          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+          // entry is not present yet - so create a new one with that ID
+          val = new Symbol(id:data.id)
+        }
       }
       else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
 
@@ -106,6 +118,12 @@ class CustomBinders {
     if ( data instanceof Map ) {
       if ( data.id ) {
         val = ServiceAccount.read(data.id)
+        if ( val == null ) {
+          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+          // entry is not present yet - so create a new one with that ID
+          val = new ServiceAccount(id:data.id, slug:data.slug)
+        }
       }
       else if ( data.slug ) {
         log.debug ("Lookup existing service account by slug ${data.slug}")
@@ -158,6 +176,12 @@ class CustomBinders {
       if ( data.id ) {
         log.debug ("ID supplied for Directory entry - read it")
         val = DirectoryEntry.read(data.id)
+        if ( val == null ) {
+          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+          // entry is not present yet - so create a new one with that ID
+          val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
+        }
       }
       else if ( data.slug != null ) {
         log.debug ("Looking up directory entry by slug ${data.slug}")
