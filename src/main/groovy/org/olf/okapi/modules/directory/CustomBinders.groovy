@@ -229,12 +229,14 @@ class CustomBinders {
           val = new GroupMember(id:data.id)
         }
       }
-      else if ( ( data.member != null ) && ( data.member instanceof String ) ) {
+      else if ( ( data.member != null ) && ( data.memberOrg instanceof String ) ) {
         // Look to see if we've already gt
         if ( isCollection ) {
-          val = obj[propName].find { it.member?.slug == data.member }
+          val = obj[propName].find { it.member?.slug == data.memberOrg }
           if ( val == null ) {
+            // Create a new group member, and rely on bindObjectToInstance to look up the member org and set it appropriately
             val = new GroupMember()
+            // Add the member org to the parent
             obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
           }
         }
