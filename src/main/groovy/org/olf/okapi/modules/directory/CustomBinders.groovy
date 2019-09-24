@@ -181,4 +181,9 @@ class CustomBinders {
 
     val
   }
+
+  public static final bindGroupMember (final def obj, final String propName, final def source, final boolean isCollection) {
+    GroupMember val = null;
+    val;
+  }
 }
