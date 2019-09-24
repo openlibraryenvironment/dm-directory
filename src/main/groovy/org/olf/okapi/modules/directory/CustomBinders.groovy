@@ -161,55 +161,88 @@ class CustomBinders {
 
   public static final bindDirectoryEntry (final def obj, final String propName, final def source, final boolean isCollection) {
     
-    log.debug ("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})")
+    log.debug ("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName} ${isCollection})")
 
     // this isn't right when we a processing a property which is a collection
     def data = isCollection ? source : source[propName]
 
     // If the data is asking for null binding then ensure we return here.
     if (data == null) {
+      log.debug("bindDirectoryEntry called with null date - return");
       return null
+    }
+    else {
+      log.debug("Process data ${data}");
     }
 
     DirectoryEntry val = null
-    if ( data instanceof Map ) {
-      if ( data.id ) {
-        log.debug ("ID supplied for Directory entry - read it")
-        val = DirectoryEntry.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
+
+    try {
+      if ( data instanceof Map ) {
+        if ( data.id ) {
+          log.debug ("ID supplied for Directory entry - read it")
+          val = DirectoryEntry.read(data.id)
+          if ( val == null ) {
+            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+            // entry is not present yet - so create a new one with that ID
+            val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
+          }
+        }
+        else if ( data.slug != null ) {
+          log.debug ("Looking up directory entry by slug ${data.slug}")
+          val = DirectoryEntry.findBySlug(data.slug)
+          if ( val == null ) {
+            log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
+            val = new DirectoryEntry(name:data.name, slug:data.slug)
+            if ( isCollection ) {
+              log.debug ("${propName} is a collection - so add new directory entry to parent collection")
+              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+            }
+          }
+        }
+
+        if ( val ) {
+          DataBindingUtils.bindObjectToInstance(val, data)
         }
       }
-      else if ( data.slug != null ) {
-        log.debug ("Looking up directory entry by slug ${data.slug}")
-        val = DirectoryEntry.findBySlug(data.slug)
+      else if ( data instanceof String ) {
+        log.debug("Data is instanceof ${data?.class?.name} so try to look up a directory entry by slug: ${data}")
+
+        // If we're in here, someone has referenced a directory entry using only the SLUG as a string. See if we can locate using that slug
+        val = DirectoryEntry.findBySlug(data)
         if ( val == null ) {
-          log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
-          val = new DirectoryEntry(name:data.name, slug:data.slug)
-          log.debug ("Add new directory entry to parent ${propName}")
-          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+
+          log.debug("Creating a new placeholder directory entry for slug ${data}");
+
+          // A bit contentious - lets create a stub entry - maybe we're loading a consortial record and we want a placeholder
+          // for a member library
+          val = new DirectoryEntry(slug:data, name:data)
+          if ( !isCollection ) {
+            // We're not a collection, so save won't cascade, lets save explicitly.
+            val.save(flush:true, failOnError:true);
+          }
         }
+      }
+      else {
+        log.warn("Unhandled type ${data?.class?.name} for DirectoryEntry binding");
       }
     }
-    else {
-      log.debug("Data is instanceof ${data?.class?.name} - skip")
+    catch (Exception e) {
+      // log and rethrow
+      log.error("unexpected error trying to process DirectryEntry",e);
+      throw e;
     }
 
     log.debug ("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}")
-    if ( val ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
-    }
-
     val
   }
 
   public static final bindGroupMember (final def obj, final String propName, final def source, final boolean isCollection) {
+
     GroupMember val = null;
 
-    log.debug ("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})")
+    log.debug ("GroupMember::@BindUsingWhenRef(${obj} ${source} ${propName} ${isCollection})")
 
     // this isn't right when we a processing a property which is a collection
     def data = isCollection ? source : source[propName]
@@ -229,11 +262,15 @@ class CustomBinders {
           val = new GroupMember(id:data.id)
         }
       }
-      else if ( ( data.member != null ) && ( data.memberOrg instanceof String ) ) {
+      else if ( ( data.memberOrg != null ) && ( data.memberOrg instanceof String ) ) {
+        log.debug("data.memberOrg != null (${data.memberOrg}) and it's a string..... so do special processing");
         // Look to see if we've already gt
         if ( isCollection ) {
-          val = obj[propName].find { it.member?.slug == data.memberOrg }
+          log.debug("processing group member, adding to a collection (${propName}) - see if we already have an entry for that");
+          val = obj[propName]?.find { it.memberOrg?.slug == data.memberOrg }
+
           if ( val == null ) {
+            log.debug("Create a new group member for ${data}");
             // Create a new group member, and rely on bindObjectToInstance to look up the member org and set it appropriately
             val = new GroupMember()
             // Add the member org to the parent
@@ -246,10 +283,11 @@ class CustomBinders {
       log.debug("Data is instanceof ${data?.class?.name} - skip")
     }
 
-    log.debug ("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}")
     if ( val ) {
       DataBindingUtils.bindObjectToInstance(val, data)
     }
+
+    log.debug ("GroupMember::@BindUsingWhenRef completed, returning ${val}")
 
     val;
   }
