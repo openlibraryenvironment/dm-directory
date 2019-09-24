@@ -143,4 +143,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   public String toString() {
     return "DirectoryEntry ${name} (${id?:'Unsaved'})".toString()
   }
+
+  public int hashCode() {
+    "DirectoryEntry:${slug}".toString().hashCode()
+  }
+
 }

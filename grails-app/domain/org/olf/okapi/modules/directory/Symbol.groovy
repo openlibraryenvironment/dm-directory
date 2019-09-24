@@ -52,6 +52,6 @@ class Symbol  implements MultiTenant<Symbol>  {
   }
 
   public int hashCode() {
-    "${authority.symbol}:${symbol}".toString().hashCode()
+    "SYMBOL:${authority.symbol}:${symbol}".toString().hashCode()
   }
 }
