@@ -43,7 +43,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     symbols: Symbol,
     services: ServiceAccount,
     announcements: Announcement,
-    addresses: Address
+    addresses: Address,
+    // Consortial organisations are composed of members
+    members: GroupMember
   ]
 
   static mappedBy = [
@@ -52,7 +54,8 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     symbols: 'owner',
     services: 'accountHolder',
     announcements: 'owner',
-    addresses: 'owner',
+    addresses: 'owner',   
+    members: 'groupOrg'
   ]
 
   static belongsTo = [

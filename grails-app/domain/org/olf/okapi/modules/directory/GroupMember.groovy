@@ -18,9 +18,8 @@ import grails.gorm.MultiTenant
 class GroupMember  implements MultiTenant<GroupMember>,CustomProperties  {
 
   String id
-  String memberSlug
-  DirectoryEntry parentOrg
-  DirectoryEntry member
+  DirectoryEntry groupOrg
+  DirectoryEntry memberOrg
 
   static graphql = true
 
@@ -31,20 +30,18 @@ class GroupMember  implements MultiTenant<GroupMember>,CustomProperties  {
   ]
 
   static belongsTo = [
-    parentOrg: DirectoryEntry
+    groupOrg: DirectoryEntry
   ]
 
   static mapping = {
                  id column:'gm_id', generator: 'uuid2', length:36
-         memberSlug column:'de_member_slug'
-          parentOrg column:'de_parent_org_fk'
-             member column:'de_member_fk'
+           groupOrg column:'de_parent_org_fk'
+          memberOrg column:'de_member_fk'
   }
 
   static constraints = {
-            memberSlug(nullable:false, blank:false)
-             parentOrg(nullable:false, blank:false)
-                member(nullable:true, blank:false)
+              groupOrg(nullable:false, blank:false)
+             memberOrg(nullable:false, blank:false)
   }
 
 }

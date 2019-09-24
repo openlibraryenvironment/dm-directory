@@ -208,6 +208,47 @@ class CustomBinders {
 
   public static final bindGroupMember (final def obj, final String propName, final def source, final boolean isCollection) {
     GroupMember val = null;
+
+    log.debug ("DirectoryEntry::@BindUsingWhenRef(${obj} ${source} ${propName})")
+
+    // this isn't right when we a processing a property which is a collection
+    def data = isCollection ? source : source[propName]
+
+    // If the data is asking for null binding then ensure we return here.
+    if (data == null) {
+      return null
+    }
+
+    if ( data instanceof Map ) {
+      if ( data.id ) {
+        val = GroupMember.read(data.id)
+        if ( val == null ) {
+          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+          // entry is not present yet - so create a new one with that ID
+          val = new GroupMember(id:data.id)
+        }
+      }
+      else if ( ( data.member != null ) && ( data.member instanceof String ) ) {
+        // Look to see if we've already gt
+        if ( isCollection ) {
+          val = obj[propName].find { it.member?.slug == data.member }
+          if ( val == null ) {
+            val = new GroupMember()
+            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+          }
+        }
+      }
+    }
+    else {
+      log.debug("Data is instanceof ${data?.class?.name} - skip")
+    }
+
+    log.debug ("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}")
+    if ( val ) {
+      DataBindingUtils.bindObjectToInstance(val, data)
+    }
+
     val;
   }
 }
