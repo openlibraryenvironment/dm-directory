@@ -23,6 +23,11 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String description
   String foafUrl
   String entryUrl
+
+  // If the location corresponds to a location in a host LMS, record that
+  // code here - "MAIN" is a common example
+  String lmsLocationCode
+
   Long foafTimestamp
 
   DirectoryEntry parent
@@ -72,17 +77,19 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
             foafUrl column:'de_foaf_url'
            entryUrl column:'de_entry_url'
       foafTimestamp column:'de_foaf_timestamp'
+    lmsLocationCode column:'de_lms_location_code'
   }
 
   static constraints = {
-             name(nullable:false, blank:false)
-             slug(nullable:true, blank:false)
-      description(nullable:true, blank:false)
-           parent(nullable:true)
-           status(nullable:true)
-          foafUrl(nullable:true, blank:false)
-         entryUrl(nullable:true, blank:false)
-    foafTimestamp(nullable:true)
+               name(nullable:false, blank:false)
+               slug(nullable:true, blank:false)
+        description(nullable:true, blank:false)
+             parent(nullable:true)
+             status(nullable:true)
+            foafUrl(nullable:true, blank:false)
+           entryUrl(nullable:true, blank:false)
+      foafTimestamp(nullable:true)
+    lmsLocationCode(nullable:true)
   }
 
   /**

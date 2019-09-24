@@ -35,8 +35,8 @@ class GroupMember  implements MultiTenant<GroupMember>,CustomProperties  {
 
   static mapping = {
                  id column:'gm_id', generator: 'uuid2', length:36
-           groupOrg column:'de_parent_org_fk'
-          memberOrg column:'de_member_fk'
+           groupOrg column:'gm_group_fk'
+          memberOrg column:'gm_member_fk'
   }
 
   static constraints = {
