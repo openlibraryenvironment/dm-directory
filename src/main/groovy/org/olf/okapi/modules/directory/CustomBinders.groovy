@@ -73,25 +73,41 @@ class CustomBinders {
       else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
 
         def qr = null;
+        String authority_symbol = null;
 
         if ( data.authority instanceof String ) {
+          authority_symbol = data.authority
           qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
         }
         else if ( data.authority.symbol != null ) {
+          authority_symbol = data.authority.symbol
           qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
         }
   
         if ( qr?.size() == 1 )
           val = qr.get(0)
-  
-        if ( val == null ) {
+        else {
           log.debug ("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
           // val = new Symbol(data)
           val = new Symbol()
-  
-          log.debug("Add new symbol to entry")
-          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
         }
+  
+       
+        // If we're binding in a colleciton property, only add the symbol if it's not already in the list
+        if ( isCollection ) {
+          log.debug("${propName} is a collection - add ${val} to it");
+
+          // Check that this symbol is not already present
+          if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
+            log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
+
+            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+          }
+          else {
+            log.debug("found existing symbol - no action needed")
+          }
+        }
+
       }
     }
   

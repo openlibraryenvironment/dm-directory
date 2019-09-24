@@ -40,4 +40,18 @@ class Symbol  implements MultiTenant<Symbol>  {
            priority(nullable:true, blank:false)
 
   }
+
+  public boolean equals(Object other) {
+    boolean result = false;
+    if ( ( other instanceof Symbol ) && 
+         ( other.symbol == this.symbol  ) &&
+         ( other.authority?.symbol == this.authority?.symbol ) ) {
+      result = true
+    }
+    return result;
+  }
+
+  public int hashCode() {
+    "${authority.symbol}:${symbol}".toString().hashCode()
+  }
 }
