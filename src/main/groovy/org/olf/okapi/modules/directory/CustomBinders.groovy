@@ -44,12 +44,16 @@ class CustomBinders {
       }
     }
 
+    if ( val == null ) {
+      log.warn("VAL NULL at end of data binding...");
+    }
+
     val
   }
   
   public static final bindSymbol ( final def obj, final String propName, final def source, final boolean isCollection ) {
   
-    log.debug ("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source}")
+    log.debug ("Symbol::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}")
   
     def data = isCollection ? source : source[propName]
   
@@ -59,66 +63,84 @@ class CustomBinders {
     }
   
     Symbol val = null
-  
-    if ( data instanceof Map ) {
-      if ( data.id ) {
-        val = Symbol.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new Symbol(id:data.id)
-        }
-      }
-      else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
 
-        def qr = null;
-        String authority_symbol = null;
-
-        if ( data.authority instanceof String ) {
-          authority_symbol = data.authority
-          qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
+    try {
+      if ( data instanceof Map ) {
+        log.debug("SYMBOL Processing map of data ${data}");
+        if ( data.id ) {
+          val = Symbol.read(data.id)
+          if ( val == null ) {
+            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
+            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
+            // entry is not present yet - so create a new one with that ID
+            val = new Symbol(id:data.id)
+          }
         }
-        else if ( data.authority.symbol != null ) {
-          authority_symbol = data.authority.symbol
-          qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
-        }
+        else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
+          log.debug("processing by symbol and authority ${data}");
   
-        if ( qr?.size() == 1 )
-          val = qr.get(0)
-        else {
-          log.debug ("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
-          // val = new Symbol(data)
-          val = new Symbol()
-        }
+          def qr = null;
+          String authority_symbol = null;
   
-       
-        // If we're binding in a colleciton property, only add the symbol if it's not already in the list
-        if ( isCollection ) {
-          log.debug("${propName} is a collection - add ${val} to it");
-
-          // Check that this symbol is not already present
-          if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
-            log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
-            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+          if ( data.authority instanceof String ) {
+            authority_symbol = data.authority
+            log.debug("Attempt to look-up by string authority: ${authority_symbol} ${data.symbol}");
+            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
+          }
+          else if ( data.authority.symbol != null ) {
+            authority_symbol = data.authority.symbol
+            log.debug("Attempt to look-up by map authority: ${authority_symbol} ${data.symbol}");
+            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
           }
           else {
-            log.debug("found existing symbol - no action needed")
+            log.warn("Insufficient data to match symbol");
+          }
+    
+          log.debug("Query result ${qr}");
+
+          if ( qr?.size() == 1 ) {
+            log.debug("located symbol by value");
+            val = qr.get(0)
+          }
+          else {
+            log.debug ("Create new symbol entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
+            // val = new Symbol(data)
+            val = new Symbol()
+          }
+    
+         
+          // If we're binding in a colleciton property, only add the symbol if it's not already in the list
+          if ( isCollection ) {
+            log.debug("${propName} is a collection - add ${val} to it");
+  
+            // Check that this symbol is not already present
+            if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
+              log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
+              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+            }
+            else {
+              log.debug("found existing symbol - no action needed")
+            }
           }
         }
-
       }
-    }
-  
-    if ( val ) {
-      try {
+      else {
+        log.warn("Unhandled type ${data?.class?.name} binding Symbol");
+      }
+
+      if ( val ) {
+        log.debug("Binding data(${data}) to symbol instance(${val})");
         DataBindingUtils.bindObjectToInstance(val, data)
       }
-      catch ( Exception e ) {
-        log.error("problem trying to bind symbol. rethrowing",e);
-        throw e;
+      else {
+        log.warn("VAL NULL at end of data binding...");
       }
     }
+    catch ( Exception e ) {
+      log.error("problem trying to bind symbol. rethrowing",e);
+      throw e;
+    }
+
   
     val
   }
@@ -171,10 +193,10 @@ class CustomBinders {
 
       def dbr = DataBindingUtils.bindObjectToInstance(val, data)
 
-      log.debug ("Check value of service property After bind: ${val?.service} (owner=${val.accountHolder})- should not be null if ${data.service} is present - data binding result is ${dbr}")
+      log.debug ("Check value of service property After bind: ${val?.service} (owner=${val.accountHolder})- should not be null if ${data.service} is present");
     }
     else {
-      log.debug ("-- val is null, can't merge ${data}")
+      log.warn ("-- val is null, can't merge ${data}")
     }
 
     val
@@ -222,6 +244,8 @@ class CustomBinders {
               log.debug ("${propName} is a collection - so add new directory entry to parent collection")
               obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
             }
+
+            val.save(flush:true);
           }
           else {
             log.debug("Located a directory entry for slug ${data.slug}(${val.id})");
@@ -262,6 +286,10 @@ class CustomBinders {
       // log and rethrow
       log.error("**** unexpected error trying to process DirectryEntry ****",e);
       throw e;
+    }
+
+    if ( val == null ) {
+      log.warn("bind DirectoryEntry returning NULL");
     }
 
     log.debug ("DirectoryEntry::@BindUsingWhenRef completed, returning ${val}")
@@ -315,6 +343,9 @@ class CustomBinders {
 
     if ( val ) {
       DataBindingUtils.bindObjectToInstance(val, data)
+    }
+    else {
+      log.warn("bind DirectoryEntry returning NULL");
     }
 
     log.debug ("GroupMember::@BindUsingWhenRef completed, returning ${val}")
