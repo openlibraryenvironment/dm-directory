@@ -77,6 +77,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
            entryUrl column:'de_entry_url'
       foafTimestamp column:'de_foaf_timestamp'
     lmsLocationCode column:'de_lms_location_code'
+              tags cascade:'save-update'
   }
 
   static constraints = {
