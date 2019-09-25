@@ -18,7 +18,6 @@ import grails.gorm.MultiTenant
 class GroupMember  implements MultiTenant<GroupMember>,CustomProperties  {
 
   String id
-  DirectoryEntry groupOrg
   DirectoryEntry memberOrg
 
   static graphql = true

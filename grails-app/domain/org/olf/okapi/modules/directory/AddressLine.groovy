@@ -16,9 +16,6 @@ class AddressLine  implements MultiTenant<AddressLine>  {
   RefdataValue type
   String value
 
-  Address owner
-
-
   static hasMany = [
   ]
 
@@ -26,7 +23,7 @@ class AddressLine  implements MultiTenant<AddressLine>  {
   ]
 
   static belongsTo = [
-    owner: Address,
+    owner: Address
   ]
 
   static mapping = {

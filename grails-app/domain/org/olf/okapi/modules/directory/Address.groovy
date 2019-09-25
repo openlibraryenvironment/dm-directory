@@ -9,7 +9,6 @@ class Address  implements MultiTenant<Address>  {
 
   String id
   String addressLabel
-  DirectoryEntry owner
 
   static hasMany = [
     lines: AddressLine,

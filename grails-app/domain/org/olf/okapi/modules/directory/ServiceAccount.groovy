@@ -18,7 +18,6 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
   String slug
   String accountDetails
   Service service
-  DirectoryEntry accountHolder
 
   static graphql = true
 

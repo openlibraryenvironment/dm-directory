@@ -12,7 +12,6 @@ class Symbol  implements MultiTenant<Symbol>  {
   String id
   String symbol
   String priority
-  DirectoryEntry owner
   NamingAuthority authority
 
   static hasMany = [

@@ -199,10 +199,13 @@ class CustomBinders {
           log.debug ("ID supplied for Directory entry - read it")
           val = DirectoryEntry.read(data.id)
           if ( val == null ) {
+            log.debug("Creating a new directory entry ${data}");
             // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
             // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
             // entry is not present yet - so create a new one with that ID
             val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
+            // Interim save
+            val.save()
           }
         }
         else if ( data.slug != null ) {
@@ -211,14 +214,21 @@ class CustomBinders {
           if ( val == null ) {
             log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
             val = new DirectoryEntry(name:data.name, slug:data.slug)
+            // Interim save
+            val.save()
+
             if ( isCollection ) {
               log.debug ("${propName} is a collection - so add new directory entry to parent collection")
               obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
             }
           }
+          else {
+            log.debug("Located a directory entry for slug ${data.slug}(${val.id})");
+          }
         }
 
         if ( val ) {
+          log.debug("Binding data to instance ${val}");
           DataBindingUtils.bindObjectToInstance(val, data)
         }
       }
@@ -234,6 +244,9 @@ class CustomBinders {
           // A bit contentious - lets create a stub entry - maybe we're loading a consortial record and we want a placeholder
           // for a member library
           val = new DirectoryEntry(slug:data, name:data)
+          // Interim save
+          val.save()
+
           if ( !isCollection ) {
             // We're not a collection, so save won't cascade, lets save explicitly.
             val.save(flush:true, failOnError:true);

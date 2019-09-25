@@ -7,8 +7,6 @@ import grails.gorm.MultiTenant
 class FriendAssertion  implements MultiTenant<DirectoryEntry>  {
 
   String id
-  DirectoryEntry owner
-  DirectoryEntry friend_org
 
   static hasMany = [
   ]
@@ -16,7 +14,10 @@ class FriendAssertion  implements MultiTenant<DirectoryEntry>  {
   static mappedBy = [
   ]
 
-  static belongsTo = [ owner: DirectoryEntry, friend_org: DirectoryEntry ]
+  static belongsTo = [ 
+    owner: DirectoryEntry, 
+    friend_org: DirectoryEntry 
+  ]
 
   static mapping = {
                  id column:'fa_id', generator: 'uuid2', length:36

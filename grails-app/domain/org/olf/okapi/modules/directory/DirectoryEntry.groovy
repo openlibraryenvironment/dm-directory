@@ -49,7 +49,6 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     services: ServiceAccount,
     announcements: Announcement,
     addresses: Address,
-    // Consortial organisations are composed of members
     members: GroupMember
   ]
 
