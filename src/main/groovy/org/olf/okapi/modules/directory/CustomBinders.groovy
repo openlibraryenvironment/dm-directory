@@ -100,7 +100,6 @@ class CustomBinders {
           // Check that this symbol is not already present
           if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
             log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
-
             obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
           }
           else {
@@ -112,7 +111,13 @@ class CustomBinders {
     }
   
     if ( val ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
+      try {
+        DataBindingUtils.bindObjectToInstance(val, data)
+      }
+      catch ( Exception e ) {
+        log.error("problem trying to bind symbol. rethrowing",e);
+        throw e;
+      }
     }
   
     val
@@ -196,7 +201,7 @@ class CustomBinders {
     try {
       if ( data instanceof Map ) {
         if ( data.id ) {
-          log.debug ("ID supplied for Directory entry - read it")
+          log.debug ("MAP ID supplied for Directory entry - read it")
           val = DirectoryEntry.read(data.id)
           if ( val == null ) {
             log.debug("Creating a new directory entry ${data}");
@@ -204,18 +209,14 @@ class CustomBinders {
             // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
             // entry is not present yet - so create a new one with that ID
             val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
-            // Interim save
-            val.save()
           }
         }
         else if ( data.slug != null ) {
-          log.debug ("Looking up directory entry by slug ${data.slug}")
+          log.debug ("MAP Looking up directory entry by slug ${data.slug}")
           val = DirectoryEntry.findBySlug(data.slug)
           if ( val == null ) {
             log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
             val = new DirectoryEntry(name:data.name, slug:data.slug)
-            // Interim save
-            val.save()
 
             if ( isCollection ) {
               log.debug ("${propName} is a collection - so add new directory entry to parent collection")
@@ -226,6 +227,9 @@ class CustomBinders {
             log.debug("Located a directory entry for slug ${data.slug}(${val.id})");
           }
         }
+        else {
+          log.warn("DirectoryEntry binder passed a map but no usable properties");
+        }
 
         if ( val ) {
           log.debug("Binding data to instance ${val}");
@@ -233,7 +237,7 @@ class CustomBinders {
         }
       }
       else if ( data instanceof String ) {
-        log.debug("Data is instanceof ${data?.class?.name} so try to look up a directory entry by slug: ${data}")
+        log.debug("STR Data is instanceof ${data?.class?.name} so try to look up a directory entry by slug: ${data}")
 
         // If we're in here, someone has referenced a directory entry using only the SLUG as a string. See if we can locate using that slug
         val = DirectoryEntry.findBySlug(data)
@@ -244,22 +248,19 @@ class CustomBinders {
           // A bit contentious - lets create a stub entry - maybe we're loading a consortial record and we want a placeholder
           // for a member library
           val = new DirectoryEntry(slug:data, name:data)
-          // Interim save
-          val.save()
-
-          if ( !isCollection ) {
-            // We're not a collection, so save won't cascade, lets save explicitly.
-            val.save(flush:true, failOnError:true);
-          }
         }
       }
+      else if ( data instanceof DirectoryEntry ) {
+        log.warn("DM Data is instanceof DirectoryEntry - data:${data} for obj:${obj} prop is ${propName}");
+        val = data;
+      }
       else {
-        log.warn("Unhandled type ${data?.class?.name} for DirectoryEntry binding");
+        log.error("Unhandled type ${data?.class?.name} for DirectoryEntry binding");
       }
     }
     catch (Exception e) {
       // log and rethrow
-      log.error("unexpected error trying to process DirectryEntry",e);
+      log.error("**** unexpected error trying to process DirectryEntry ****",e);
       throw e;
     }
 
