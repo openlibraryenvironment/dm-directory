@@ -107,8 +107,15 @@ class CustomBinders {
             // val = new Symbol(data)
             val = new Symbol()
           }
+
+          if ( val ) {
+            log.debug("Binding data(${data}) to symbol instance(${val})");
+            DataBindingUtils.bindObjectToInstance(val, data)
+          }
+          else {
+            log.warn("VAL NULL at end of data binding...");
+          }
     
-         
           // If we're binding in a colleciton property, only add the symbol if it's not already in the list
           if ( isCollection ) {
             log.debug("${propName} is a collection - add ${val} to it");
@@ -128,13 +135,6 @@ class CustomBinders {
         log.warn("Unhandled type ${data?.class?.name} binding Symbol");
       }
 
-      if ( val ) {
-        log.debug("Binding data(${data}) to symbol instance(${val})");
-        DataBindingUtils.bindObjectToInstance(val, data)
-      }
-      else {
-        log.warn("VAL NULL at end of data binding...");
-      }
     }
     catch ( Exception e ) {
       log.error("problem trying to bind symbol. rethrowing",e);
