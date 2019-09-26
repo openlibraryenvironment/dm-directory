@@ -32,7 +32,7 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
                slug column:'sa_slug'
       accountHolder column:'sa_account_holder'
      accountDetails column:'sa_account_details'
-            service cascade:'save-delete'
+            service cascade:'save-update'
   }
 
   static constraints = {
