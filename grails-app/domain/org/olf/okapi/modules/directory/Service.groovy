@@ -87,6 +87,7 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
              address column:'se_address'
                 type column:'se_type_fk'
     businessFunction column:'se_business_function_fk'
+                tags cascade:'save-update'
   }
 
   static constraints = {

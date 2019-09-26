@@ -244,8 +244,6 @@ class CustomBinders {
               log.debug ("${propName} is a collection - so add new directory entry to parent collection")
               obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
             }
-
-            val.save(flush:true);
           }
           else {
             log.debug("Located a directory entry for slug ${data.slug}(${val.id})");

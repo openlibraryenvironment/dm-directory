@@ -26,6 +26,7 @@ class Address  implements MultiTenant<Address>  {
   static mapping = {
                  id column:'addr_id', generator: 'uuid2', length:36
        addressLabel column:'addr_label'
+               tags cascade:'save-update'
   }
 
   static constraints = {
