@@ -178,11 +178,6 @@ class CustomBinders {
 
           // Try recursively calling the bind here to do the right thing
           val = new ServiceAccount(slug:data.slug)
-
-          if ( isCollection ) {
-            log.debug ("${propName} is a collection - add the new object to the list")
-            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
-          }
         }
       }
     }
@@ -196,6 +191,14 @@ class CustomBinders {
       def dbr = DataBindingUtils.bindObjectToInstance(val, data)
 
       log.debug ("Check value of service property After bind: ${val?.service} (owner=${val.accountHolder})- should not be null if ${data.service} is present");
+
+      // Finally - add the new service account into any colleciton property - it might be important to do this here
+      // So that the object does not participate in any cascading saves until after all the properties are properly bound - in particular
+      // service.
+      if ( isCollection ) {
+        log.debug ("${propName} is a collection - add the new object to the list")
+        obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+      }
     }
     else {
       log.warn ("-- val is null, can't merge ${data}")
