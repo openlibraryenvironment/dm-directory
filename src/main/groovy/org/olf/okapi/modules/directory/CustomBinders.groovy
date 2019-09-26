@@ -179,8 +179,10 @@ class CustomBinders {
           // Try recursively calling the bind here to do the right thing
           val = new ServiceAccount(slug:data.slug)
 
-          log.debug ("Add new SA to ${propName} list")
-          obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+          if ( isCollection ) {
+            log.debug ("${propName} is a collection - add the new object to the list")
+            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+          }
         }
       }
     }
