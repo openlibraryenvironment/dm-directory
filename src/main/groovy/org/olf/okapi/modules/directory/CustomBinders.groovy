@@ -107,34 +107,33 @@ class CustomBinders {
             // val = new Symbol(data)
             val = new Symbol()
           }
+        }
+      }
 
-          if ( val ) {
-            log.debug("Binding data(${data}) to symbol instance(${val})");
-            DataBindingUtils.bindObjectToInstance(val, data)
+      if ( val ) {
+        log.debug("Binding data(${data}) to symbol instance(${val})");
+        DataBindingUtils.bindObjectToInstance(val, data)
+    
+        // If we're binding in a colleciton property, only add the symbol if it's not already in the list
+        if ( isCollection ) {
+          log.debug("${propName} is a collection - add ${val} to it");
+
+          // Check that this symbol is not already present
+          if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
+            log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
+            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
           }
           else {
-            log.warn("VAL NULL at end of data binding...");
+            log.debug("found existing symbol - no action needed")
           }
-    
-          // If we're binding in a colleciton property, only add the symbol if it's not already in the list
-          if ( isCollection ) {
-            log.debug("${propName} is a collection - add ${val} to it");
-  
-            // Check that this symbol is not already present
-            if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
-              log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
-              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
-            }
-            else {
-              log.debug("found existing symbol - no action needed")
-            }
-          }
+        }
+        else {
+          log.warn("Unhandled type ${data?.class?.name} binding Symbol");
         }
       }
       else {
-        log.warn("Unhandled type ${data?.class?.name} binding Symbol");
+        log.warn("VAL NULL at end of data binding...");
       }
-
     }
     catch ( Exception e ) {
       log.error("problem trying to bind symbol. rethrowing",e);
