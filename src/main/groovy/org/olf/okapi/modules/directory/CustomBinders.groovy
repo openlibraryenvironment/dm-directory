@@ -241,7 +241,7 @@ class CustomBinders {
           log.debug ("MAP Looking up directory entry by slug ${data.slug}")
           val = DirectoryEntry.findBySlug(data.slug)
           if ( val == null ) {
-            log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
+            log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}");
             val = new DirectoryEntry(name:data.name, slug:data.slug)
 
             if ( isCollection ) {
