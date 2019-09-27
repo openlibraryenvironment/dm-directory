@@ -22,13 +22,7 @@ class CustomBinders {
 
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = NamingAuthority.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new NamingAuthority(id:data.id, symbol:data.symbol);
-        }
+        val = NamingAuthority.get(data.id)
       }
       else if ( data.symbol ) {
         val = NamingAuthority.findBySymbol(data.symbol) ?: new NamingAuthority(symbol:data.symbol)
@@ -75,13 +69,7 @@ class CustomBinders {
           authority_symbol = data.authority.symbol
 
         if ( data.id ) {
-          val = Symbol.read(data.id)
-          if ( val == null ) {
-            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-            // entry is not present yet - so create a new one with that ID
-            val = new Symbol(id:data.id)
-          }
+          val = Symbol.get(data.id)
         }
         else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
           log.debug("processing by symbol and authority ${data}");
@@ -159,13 +147,7 @@ class CustomBinders {
     ServiceAccount val = null
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = ServiceAccount.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new ServiceAccount(id:data.id, slug:data.slug)
-        }
+        val = ServiceAccount.get(data.id)
       }
       else if ( data.slug ) {
         log.debug ("Lookup existing service account by slug ${data.slug}")
@@ -228,14 +210,7 @@ class CustomBinders {
       if ( data instanceof Map ) {
         if ( data.id ) {
           log.debug ("MAP ID supplied for Directory entry - read it")
-          val = DirectoryEntry.read(data.id)
-          if ( val == null ) {
-            log.debug("Creating a new directory entry ${data}");
-            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-            // entry is not present yet - so create a new one with that ID
-            val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
-          }
+          val = DirectoryEntry.get(data.id)
         }
         else if ( data.slug != null ) {
           log.debug ("MAP Looking up directory entry by slug ${data.slug}")
@@ -314,13 +289,7 @@ class CustomBinders {
 
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = GroupMember.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new GroupMember(id:data.id)
-        }
+        val = GroupMember.get(data.id)
       }
       else if ( ( data.memberOrg != null ) && ( data.memberOrg instanceof String ) ) {
         log.debug("data.memberOrg != null (${data.memberOrg}) and it's a string..... so do special processing");
@@ -369,10 +338,7 @@ class CustomBinders {
 
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = Service.read(data.id);
-        if ( val == null ) {
-          val = new Service(id:data.id);
-        }
+        val = Service.get(data.id);
       }
       else if ( data.address ) {
         val = Service.findByAddress(data.address) ?: new Service(address:data.address)
