@@ -107,6 +107,7 @@ class CustomBinders {
             val = new Symbol()
           }
         }
+
       }
 
       if ( val ) {
@@ -118,7 +119,7 @@ class CustomBinders {
           log.debug("${propName} is a collection - add ${val} to it");
 
           // Check that this symbol is not already present
-          if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
+          if ( obj[propName].find { ( ( it.symbol == val.symbol ) && ( it.authority.symbol == val.authority.symbol ) ) } == null ) {
             log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
             obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
           }
