@@ -67,6 +67,13 @@ class CustomBinders {
     try {
       if ( data instanceof Map ) {
         log.debug("SYMBOL Processing map of data ${data}");
+        String authority_symbol = null;
+
+        if ( data.authority instanceof String )
+          authority_symbol = data.authority
+        else if ( data.authority.symbol != null ) 
+          authority_symbol = data.authority.symbol
+
         if ( data.id ) {
           val = Symbol.read(data.id)
           if ( val == null ) {
@@ -80,17 +87,9 @@ class CustomBinders {
           log.debug("processing by symbol and authority ${data}");
   
           def qr = null;
-          String authority_symbol = null;
   
-          if ( data.authority instanceof String ) {
-            authority_symbol = data.authority
-            log.debug("Attempt to look-up by string authority: ${authority_symbol} ${data.symbol}");
-            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
-          }
-          else if ( data.authority.symbol != null ) {
-            authority_symbol = data.authority.symbol
-            log.debug("Attempt to look-up by map authority: ${authority_symbol} ${data.symbol}");
-            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
+          if ( authority_symbol != null ) {
+            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:authority_symbol])
           }
           else {
             log.warn("Insufficient data to match symbol");
@@ -354,4 +353,41 @@ class CustomBinders {
 
     val;
   }
+
+  public static final bindService(final def obj, final String propName, final def source, final boolean isCollection) { 
+    log.debug("Service::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
+
+    Service val = null;
+
+    def data = isCollection ? source : source[propName]
+
+    // If the data is asking for null binding then ensure we return here.
+    if (data == null) {
+      return null
+    }
+
+    if ( data instanceof Map ) {
+      if ( data.id ) {
+        val = Service.read(data.id);
+        if ( val == null ) {
+          val = new Service(id:data.id);
+        }
+      }
+      else if ( data.address ) {
+        val = Service.findByAddress(data.address) ?: new Service(address:data.address)
+      }
+    }
+
+    // Now allow binding of the properties set for that directory entry
+    if (val) {
+      if (data instanceof Map ) {
+        DataBindingUtils.bindObjectToInstance(val, data)
+      }
+    }
+
+    log.debug("Service::@BindUsingWhenRef returning ${val}");
+
+    val
+  }
+
 }
