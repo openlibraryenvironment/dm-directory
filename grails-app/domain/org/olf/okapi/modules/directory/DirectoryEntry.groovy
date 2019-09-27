@@ -83,7 +83,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 
   static constraints = {
                name(nullable:false, blank:false)
-               slug(nullable:true, blank:false)
+               slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
              parent(nullable:true)
              status(nullable:true)
