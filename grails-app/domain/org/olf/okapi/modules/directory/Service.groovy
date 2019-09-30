@@ -16,37 +16,7 @@ import grails.web.databinding.DataBindingUtils
  * itself.
  */
 @BindUsingWhenRef({ obj, propName, source, isCollection = false ->
-
-  println("Service::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
-
-  Service val = null;
-
-  def data = isCollection ? source : source[propName]
-
-  // If the data is asking for null binding then ensure we return here.
-  if (data == null) {
-    return null
-  }
-
-  if ( data instanceof Map ) {
-    if ( data.id ) {
-      val = Service.read(data.id);
-    }
-    else if ( data.address ) {
-      val = Service.findByAddress(data.address) ?: new Service(address:data.address)
-    }
-  }
-
-  // Now allow binding of the properties set for that directory entry
-  if (val) {
-    if (data instanceof Map ) {
-      DataBindingUtils.bindObjectToInstance(val, data)
-    }
-  }
-
-  println("Service::@BindUsingWhenRef returning ${val}");
-
-  val
+  CustomBinders.bindService(obj, propName, source, isCollection)
 })
 class Service  implements CustomProperties,MultiTenant<Service>  {
 

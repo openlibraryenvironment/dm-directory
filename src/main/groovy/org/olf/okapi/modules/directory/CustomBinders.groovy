@@ -22,13 +22,7 @@ class CustomBinders {
 
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = NamingAuthority.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new NamingAuthority(id:data.id, symbol:data.symbol);
-        }
+        val = NamingAuthority.get(data.id)
       }
       else if ( data.symbol ) {
         val = NamingAuthority.findBySymbol(data.symbol) ?: new NamingAuthority(symbol:data.symbol)
@@ -67,30 +61,23 @@ class CustomBinders {
     try {
       if ( data instanceof Map ) {
         log.debug("SYMBOL Processing map of data ${data}");
+        String authority_symbol = null;
+
+        if ( data.authority instanceof String )
+          authority_symbol = data.authority
+        else if ( data.authority.symbol != null ) 
+          authority_symbol = data.authority.symbol
+
         if ( data.id ) {
-          val = Symbol.read(data.id)
-          if ( val == null ) {
-            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-            // entry is not present yet - so create a new one with that ID
-            val = new Symbol(id:data.id)
-          }
+          val = Symbol.get(data.id)
         }
         else if ( ( data.symbol != null ) && ( data.authority != null ) ) {
           log.debug("processing by symbol and authority ${data}");
   
           def qr = null;
-          String authority_symbol = null;
   
-          if ( data.authority instanceof String ) {
-            authority_symbol = data.authority
-            log.debug("Attempt to look-up by string authority: ${authority_symbol} ${data.symbol}");
-            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority])
-          }
-          else if ( data.authority.symbol != null ) {
-            authority_symbol = data.authority.symbol
-            log.debug("Attempt to look-up by map authority: ${authority_symbol} ${data.symbol}");
-            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:data.authority.symbol])
+          if ( authority_symbol != null ) {
+            qr = Symbol.executeQuery('select s from Symbol as s where s.symbol=:s and s.authority.symbol=:a',[s:data.symbol, a:authority_symbol])
           }
           else {
             log.warn("Insufficient data to match symbol");
@@ -107,34 +94,34 @@ class CustomBinders {
             // val = new Symbol(data)
             val = new Symbol()
           }
+        }
 
-          if ( val ) {
-            log.debug("Binding data(${data}) to symbol instance(${val})");
-            DataBindingUtils.bindObjectToInstance(val, data)
+      }
+
+      if ( val ) {
+        log.debug("Binding data(${data}) to symbol instance(${val})");
+        DataBindingUtils.bindObjectToInstance(val, data)
+    
+        // If we're binding in a colleciton property, only add the symbol if it's not already in the list
+        if ( isCollection ) {
+          log.debug("${propName} is a collection - add ${val} to it");
+
+          // Check that this symbol is not already present
+          if ( obj[propName].find { ( ( it.symbol == val.symbol ) && ( it.authority.symbol == val.authority.symbol ) ) } == null ) {
+            log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
+            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
           }
           else {
-            log.warn("VAL NULL at end of data binding...");
+            log.debug("found existing symbol - no action needed")
           }
-    
-          // If we're binding in a colleciton property, only add the symbol if it's not already in the list
-          if ( isCollection ) {
-            log.debug("${propName} is a collection - add ${val} to it");
-  
-            // Check that this symbol is not already present
-            if ( obj[propName].find { ( ( it.symbol == data.symbol ) && ( it.authority.symbol == authority_symbol ) ) } == null ) {
-              log.debug("Can't locate a symbol ${data.symbol} in list for ${propName} Add it - class is ${obj[propName]?.class?.name}");
-              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
-            }
-            else {
-              log.debug("found existing symbol - no action needed")
-            }
-          }
+        }
+        else {
+          log.warn("Unhandled type ${data?.class?.name} binding Symbol");
         }
       }
       else {
-        log.warn("Unhandled type ${data?.class?.name} binding Symbol");
+        log.warn("VAL NULL at end of data binding...");
       }
-
     }
     catch ( Exception e ) {
       log.error("problem trying to bind symbol. rethrowing",e);
@@ -160,13 +147,7 @@ class CustomBinders {
     ServiceAccount val = null
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = ServiceAccount.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new ServiceAccount(id:data.id, slug:data.slug)
-        }
+        val = ServiceAccount.get(data.id)
       }
       else if ( data.slug ) {
         log.debug ("Lookup existing service account by slug ${data.slug}")
@@ -229,20 +210,13 @@ class CustomBinders {
       if ( data instanceof Map ) {
         if ( data.id ) {
           log.debug ("MAP ID supplied for Directory entry - read it")
-          val = DirectoryEntry.read(data.id)
-          if ( val == null ) {
-            log.debug("Creating a new directory entry ${data}");
-            // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-            // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-            // entry is not present yet - so create a new one with that ID
-            val = new DirectoryEntry(id:data.id, slug:data.slug, name:data.name)
-          }
+          val = DirectoryEntry.get(data.id)
         }
         else if ( data.slug != null ) {
           log.debug ("MAP Looking up directory entry by slug ${data.slug}")
           val = DirectoryEntry.findBySlug(data.slug)
           if ( val == null ) {
-            log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}, source.id=${source?.id}")
+            log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}");
             val = new DirectoryEntry(name:data.name, slug:data.slug)
 
             if ( isCollection ) {
@@ -315,13 +289,7 @@ class CustomBinders {
 
     if ( data instanceof Map ) {
       if ( data.id ) {
-        val = GroupMember.read(data.id)
-        if ( val == null ) {
-          // it's possible that we are loading a copy of the data provided by mod-directory, in which case we want to have the
-          // same IDs in the copy-to module as the source mod-directory system. If read(id) returned null it means that the
-          // entry is not present yet - so create a new one with that ID
-          val = new GroupMember(id:data.id)
-        }
+        val = GroupMember.get(data.id)
       }
       else if ( ( data.memberOrg != null ) && ( data.memberOrg instanceof String ) ) {
         log.debug("data.memberOrg != null (${data.memberOrg}) and it's a string..... so do special processing");
@@ -355,4 +323,38 @@ class CustomBinders {
 
     val;
   }
+
+  public static final bindService(final def obj, final String propName, final def source, final boolean isCollection) { 
+    log.debug("Service::@BindUsingWhenRef ${obj} ${propName} ${source} ${isCollection}");
+
+    Service val = null;
+
+    def data = isCollection ? source : source[propName]
+
+    // If the data is asking for null binding then ensure we return here.
+    if (data == null) {
+      return null
+    }
+
+    if ( data instanceof Map ) {
+      if ( data.id ) {
+        val = Service.get(data.id);
+      }
+      else if ( data.address ) {
+        val = Service.findByAddress(data.address) ?: new Service(address:data.address)
+      }
+    }
+
+    // Now allow binding of the properties set for that directory entry
+    if (val) {
+      if (data instanceof Map ) {
+        DataBindingUtils.bindObjectToInstance(val, data)
+      }
+    }
+
+    log.debug("Service::@BindUsingWhenRef returning ${val}");
+
+    val
+  }
+
 }
