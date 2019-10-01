@@ -302,8 +302,11 @@ class CustomBinders {
             log.debug("Create a new group member for ${data}");
             // Create a new group member, and rely on bindObjectToInstance to look up the member org and set it appropriately
             val = new GroupMember()
+
             // Add the member org to the parent
-            obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+            if ( isCollection ) {
+              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+            }
           }
         }
       }
@@ -312,7 +315,7 @@ class CustomBinders {
       log.debug("Data is instanceof ${data?.class?.name} - skip")
     }
 
-    if ( val ) {
+    if ( ( val ) && ( data instanceof Map) ) {
       DataBindingUtils.bindObjectToInstance(val, data)
     }
     else {
