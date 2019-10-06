@@ -29,4 +29,17 @@ class NamingAuthority implements MultiTenant<NamingAuthority>  {
   static constraints = {
            symbol(nullable:false, blank:false)
   }
+
+  def beforeInsert() {
+    if ( ! this.symbol.toUpperCase().equals(this.symbol) ) {
+      this.symbol = this.symbol.toUpperCase();
+    }
+  }
+
+  def beforeUpdate() {
+    if ( ! this.symbol.toUpperCase().equals(this.symbol) ) {
+      this.symbol = this.symbol.toUpperCase();
+    }
+  }
+
 }
