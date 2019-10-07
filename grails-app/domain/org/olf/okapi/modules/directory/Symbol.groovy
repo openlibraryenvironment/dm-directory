@@ -50,6 +50,18 @@ class Symbol  implements MultiTenant<Symbol>  {
     return result;
   }
 
+  def beforeInsert() {
+    if ( ! this.symbol.toUpperCase().equals(this.symbol) ) {
+      this.symbol = this.symbol.toUpperCase();
+    }
+  }
+
+  def beforeUpdate() {
+    if ( ! this.symbol.toUpperCase().equals(this.symbol) ) {
+      this.symbol = this.symbol.toUpperCase();
+    }
+  }
+
   public int hashCode() {
     "SYMBOL:${authority.symbol}:${symbol}".toString().hashCode()
   }
