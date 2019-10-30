@@ -82,15 +82,36 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   }
 
   static constraints = {
-               name(nullable:false, blank:false)
-               slug(nullable:false, blank:false, unique:true)
+              name(nullable:false, blank:false)
+              slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
-             parent(nullable:true)
+             parent(nullable:true, validator: {DirectoryEntry obj ->
+              if (checkParentTree(this, obj) == true){
+                return true
+              }
+              return false
+            })
              status(nullable:true)
             foafUrl(nullable:true, blank:false)
            entryUrl(nullable:true, blank:false)
       foafTimestamp(nullable:true)
     lmsLocationCode(nullable:true)
+
+  }
+
+  /* 
+  Search through the parent tree to find out if this directory entry appears as its own parent along the line
+  */
+  public Boolean checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
+    return {
+      if (dir.getParent() != null) {
+        if (dir.getParent() != dirToCheck){
+          checkParentTree(dirToCheck, dir.getParent()
+        }
+        false
+      }
+      true
+    }
   }
 
   /**
