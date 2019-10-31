@@ -102,17 +102,17 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   */
   public String checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
     println "========================================================================"
-    printf("Our directory entry to check against is: %s \n", dirToCheck.toString)
-    printf("Our current directory entry is: %s \n", dir.toString())
+    println("Our directory entry to check against is: ${dirToCheck}")
+    println("Our current directory entry is: ${dir}")
     if (dir.getParent() == null) {
       printf("%o has no parent", dir)
       return null
     } else {
       if (dirToCheck.id == dir.getParent().id) {
-        printf("%s has parent %s, so there is a loop \n", dir.toString(), dirToCheck.toString)
+        println("${dir} has parent ${dirToCheck}, so there is a loop")
         return "Cycle detected"
       } else {
-        printf("No loop found yet, continuing \n")
+        println("No loop found yet, continuing")
         return checkParentTree(dirToCheck, dir.getParent())
       }
     }
