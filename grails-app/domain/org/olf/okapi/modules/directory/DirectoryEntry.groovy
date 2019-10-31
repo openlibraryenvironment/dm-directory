@@ -85,8 +85,8 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
               name(nullable:false, blank:false)
               slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
-             parent(nullable:true, validator: {DirectoryEntry obj ->
-              return checkParentTree(this, this)
+             parent(nullable:true, validator: { parent, obj ->
+              return checkParentTree(obj, obj)
             })
              status(nullable:true)
             foafUrl(nullable:true, blank:false)
