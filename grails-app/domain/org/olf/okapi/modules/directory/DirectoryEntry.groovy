@@ -86,7 +86,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
               slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
              parent(nullable:true, validator: { parent, obj ->
-              return checkParentTree(obj, obj)
+              return obj.checkParentTree(obj, obj)
             })
              status(nullable:true)
             foafUrl(nullable:true, blank:false)
@@ -98,19 +98,19 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 
   /**
   * Search through the parent tree to find out if this directory entry appears as its own parent along the line
-  * @return true if there are no parental loops, false otherwise
+  * @return null if there are no parental loops, string saying "Cycle Detected" otherwise
   */
-  public Boolean checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
+  public String checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
     println "========================================================================"
     printf("Our directory entry to check against is: %o \n", dirToCheck)
     printf("Our current directory entryis: %o \n", dir)
     if (dir.getParent() == null) {
       printf("%o has no parent", dir)
-      return true
+      return null
     } else {
       if (dirToCheck.id == dir.getParent().id) {
         printf("%o has parent %o, so there is a loop \n", dir, dirToCheck)
-        return false
+        return "Cycle detected"
       } else {
         printf("No loop found yet, continuing \n")
         return checkParentTree(dirToCheck, dir.getParent())
