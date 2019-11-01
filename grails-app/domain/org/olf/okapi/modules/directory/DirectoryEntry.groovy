@@ -101,22 +101,15 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   * @return null if there are no parental loops, string saying "Cycle Detected" otherwise
   */
   public String checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
-    println "========================================================================"
-    println("Our directory entry to check against is: ${dirToCheck}")
-    println("Our current directory entry is: ${dir}")
     if (dir.getParent() == null) {
-      println("${dir} has no parent")
       return null
     } else {
       if (dirToCheck.id == dir.getParent().id) {
-        println("${dir} has parent ${dirToCheck}, so there is a loop")
         return "Cycle detected"
       } else {
-        println("No loop found yet, continuing")
         return checkParentTree(dirToCheck, dir.getParent())
       }
     }
-    println "========================================================================"
   }
 
   /**
