@@ -105,7 +105,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     println("Our directory entry to check against is: ${dirToCheck}")
     println("Our current directory entry is: ${dir}")
     if (dir.getParent() == null) {
-      printf("%o has no parent", dir)
+      println("${dir} has no parent")
       return null
     } else {
       if (dirToCheck.id == dir.getParent().id) {
