@@ -23,6 +23,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String description
   String foafUrl
   String entryUrl
+  String phoneNumber
+  String emailAddress
+  String contactName
 
   // If the location corresponds to a location in a host LMS, record that
   // code here - "MAIN" is a common example
@@ -79,6 +82,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     lmsLocationCode column:'de_lms_location_code'
               tags cascade:'save-update'
           services cascade:'save-update'
+        phoneNumber column:'de_phone_number'
+       emailAddress column:'de_email_address'
+        contactName column:'de_contact_name'
   }
 
   static constraints = {
@@ -93,6 +99,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
            entryUrl(nullable:true, blank:false)
       foafTimestamp(nullable:true)
     lmsLocationCode(nullable:true)
+        phoneNumber(nullable:true, blank:false)
+       emailAddress(nullable:true, blank:false)
+      contactNumber(nullable:true, blank:false)
 
   }
 
