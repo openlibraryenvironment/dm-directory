@@ -101,8 +101,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     lmsLocationCode(nullable:true)
         phoneNumber(nullable:true, blank:false)
        emailAddress(nullable:true, blank:false)
-      contactNumber(nullable:true, blank:false)
-
+        contactName(nullable:true, blank:false)
   }
 
   /**
