@@ -92,7 +92,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
               slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
              parent(nullable:true, validator: { parent, obj ->
-              return obj.checkParentTree(obj, obj)
+              return obj.checkParentTree(obj, parent)
             })
              status(nullable:true)
             foafUrl(nullable:true, blank:false)
@@ -107,15 +107,20 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   /**
   * Search through the parent tree to find out if this directory entry appears as its own parent along the line
   * @return null if there are no parental loops, string saying "Cycle Detected" otherwise
+  * @param the_leaf The end of the chain in e1 -> e1.1 -> e1.1.1 -> e1.1.1.1 this will always have the value e1.1.1.1
+  * @param the_parent The current parent to check in the chain.
   */
-  public String checkParentTree(DirectoryEntry dirToCheck, DirectoryEntry dir) {
-    if (dir.getParent() == null) {
+  public String checkParentTree(DirectoryEntry the_leaf, DirectoryEntry the_parent) {
+    if (the_parent == null) {
+      // There is no parent - all is well
       return null
     } else {
-      if (dirToCheck.id == dir.getParent().id) {
+      // If the ID of the parent is the same as the ID of the leaf node then we have found a cycle. Error!
+      if (the_leaf.id == the_parent.id) {
         return "Cycle detected"
       } else {
-        return checkParentTree(dirToCheck, dir.getParent())
+        // No cycle found yet, check the parent of the parent (Which might be null, which is fine)
+        return checkParentTree(the_leaf, the_parent.getParent())
       }
     }
   }
