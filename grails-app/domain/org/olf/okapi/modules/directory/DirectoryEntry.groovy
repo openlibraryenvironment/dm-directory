@@ -111,7 +111,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   * @param the_parent The current parent to check in the chain.
   */
   public String checkParentTree(DirectoryEntry the_leaf, DirectoryEntry the_parent) {
-    if (the_parent == null) {
+    // We can only ever introduce a cycle if we are taking an existing node and updating it's parent to point to another
+    // existing node - so return right way if this is a new node
+    if ((the_parent == null)||(the_leaf?.id==null)) {
       // There is no parent - all is well
       return null
     } else {
