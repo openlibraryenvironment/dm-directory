@@ -113,13 +113,13 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   public String checkParentTree(DirectoryEntry the_leaf, DirectoryEntry the_parent) {
     // We can only ever introduce a cycle if we are taking an existing node and updating it's parent to point to another
     // existing node - so return right way if this is a new node
-    if ((the_parent == null)||(the_leaf?.id==null)) {
-      // There is no parent - all is well
+    if ((the_parent == null)||(the_parent.id==null)||(the_leaf?.id==null)) {
+      // There is no parent OR the parent is new or this node is new - all is well
       return null
     } else {
       // If the ID of the parent is the same as the ID of the leaf node then we have found a cycle. Error!
       if (the_leaf.id == the_parent.id) {
-        return "Cycle detected"
+        return "Cycle detected leaf_id=${the_leaf?.id} paren_id=${the_parent?.id}"
       } else {
         // No cycle found yet, check the parent of the parent (Which might be null, which is fine)
         return checkParentTree(the_leaf, the_parent.getParent())
