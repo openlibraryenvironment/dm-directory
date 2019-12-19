@@ -70,7 +70,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   ]
 
   static mapping = {
-                 id column:'de_id', generator: 'uuid2', length:36
+                 id column:'de_id', generator: 'assigned', length:36
                name column:'de_name'
                slug column:'de_slug'
         description column:'de_desc'
