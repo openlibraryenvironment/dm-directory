@@ -211,6 +211,18 @@ class CustomBinders {
         if ( data.id ) {
           log.debug ("MAP ID supplied for Directory entry - read it")
           val = DirectoryEntry.get(data.id)
+          if ( val == null ) {
+            log.warn("It's this horrible case - binding data contains an ID, but we weren't able to look up that ID - create a new DE with that ID");
+            // This is a weird ass case.. We've been passed a record with an ID, but weren't able to
+            // look it up. We're going to create a new record for that ID - because DirectoryEntry now uses 
+            // Assigned identifiers - this is fugly
+            val = new DirectoryEntry();
+            val.id = data.id;
+            if ( isCollection ) {
+              log.debug ("${propName} is a collection - so add new directory entry to parent collection")
+              obj."addTo${GrailsNameUtils.getClassName(propName)}" (val)
+            }
+          }
         }
         else if ( data.slug != null ) {
           log.debug ("MAP Looking up directory entry by slug ${data.slug}")
