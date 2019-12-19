@@ -248,7 +248,7 @@ class CustomBinders {
 
           // A bit contentious - lets create a stub entry - maybe we're loading a consortial record and we want a placeholder
           // for a member library
-          val = new DirectoryEntry(java.util.UUID.randomUUID().toString(), slug:data, name:data)
+          val = new DirectoryEntry(id:java.util.UUID.randomUUID().toString(), slug:data, name:data)
         }
       }
       else if ( data instanceof DirectoryEntry ) {
