@@ -217,7 +217,8 @@ class CustomBinders {
           val = DirectoryEntry.findBySlug(data.slug)
           if ( val == null ) {
             log.debug ("Create new directory entry, ${data} - prop=${propName}, source=${source}");
-            val = new DirectoryEntry(id: java.util.UUID.randomUUID().toString(), name:data.name, slug:data.slug)
+            val = new DirectoryEntry(name:data.name, slug:data.slug)
+            val.id = java.util.UUID.randomUUID().toString()
 
             if ( isCollection ) {
               log.debug ("${propName} is a collection - so add new directory entry to parent collection")
@@ -248,7 +249,8 @@ class CustomBinders {
 
           // A bit contentious - lets create a stub entry - maybe we're loading a consortial record and we want a placeholder
           // for a member library
-          val = new DirectoryEntry(id:java.util.UUID.randomUUID().toString(), slug:data, name:data)
+          val = new DirectoryEntry(slug:data, name:data)
+          val.id = java.util.UUID.randomUUID().toString()
         }
       }
       else if ( data instanceof DirectoryEntry ) {
