@@ -65,7 +65,7 @@ class CustomBinders {
 
         if ( data.authority instanceof String )
           authority_symbol = data.authority
-        else if ( data.authority.symbol != null ) 
+        else if ( data.authority?.symbol != null ) 
           authority_symbol = data.authority.symbol
 
         if ( data.id ) {
