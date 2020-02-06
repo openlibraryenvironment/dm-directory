@@ -156,15 +156,19 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 
   public String getTagSummary() {
     String result = null;
-    if ( tags )
+    if ( ( tags ) && ( tags.size() > 0 ) )
       result = tags?.collect {it?.value?:'Missing Tag'}.join(', ')
+    else
+      result = 'No tags'
     return result;
   }
 
   public String getSymbolSummary() {
     String result = null;
-    if ( symbols )
+    if ( ( symbols ) && ( symbols.size() > 0 ) )
       result = symbols?.collect {it?.authority?.symbol+':'+it?.symbol}.join(', ')
+    else
+      result = 'No symbols'
     return result;
   }
 
