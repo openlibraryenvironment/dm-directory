@@ -5,8 +5,8 @@ import com.k_int.web.toolkit.databinding.BindUsingWhenRef
 import com.k_int.web.toolkit.refdata.Defaults
 import com.k_int.web.toolkit.refdata.RefdataValue
 import com.k_int.web.toolkit.tags.Tag
-
 import grails.gorm.MultiTenant
+import com.k_int.web.toolkit.databinding.BindImmutably
 
 
 // Called when data binding wants to bind a variable of type DirectoryEntry to any domain
@@ -34,6 +34,10 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   Long foafTimestamp
 
   DirectoryEntry parent
+
+  @BindImmutably
+  Set<Tag> tags = []
+
 
   /**
    * DirectoryEntries can be managed here, or just stored for reference. Managed entries can be accessed via
