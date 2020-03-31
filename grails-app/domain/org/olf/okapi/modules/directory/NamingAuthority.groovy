@@ -27,7 +27,7 @@ class NamingAuthority implements MultiTenant<NamingAuthority>  {
   }
 
   static constraints = {
-           symbol(nullable:false, blank:false)
+           symbol(nullable:false, blank:false, unique: true)
   }
 
   def beforeInsert() {

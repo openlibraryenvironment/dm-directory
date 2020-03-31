@@ -697,4 +697,9 @@ databaseChangeLog = {
 
     }
 
+    changeSet(author: "ianibbo (generated)", id: "20200331-1432-01") {
+        addUniqueConstraint(columnNames: "na_symbol", constraintName: "unique_naming_authority", tableName: "naming_authority")
+        addUniqueConstraint(columnNames: "norm_value", constraintName: "unique_tag", tableName: "tag")
+    }
+
 }
