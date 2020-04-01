@@ -92,6 +92,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   }
 
   static constraints = {
+              id(bindable:true)
               name(nullable:false, blank:false)
               slug(nullable:false, blank:false, unique:true)
         description(nullable:true, blank:false)
