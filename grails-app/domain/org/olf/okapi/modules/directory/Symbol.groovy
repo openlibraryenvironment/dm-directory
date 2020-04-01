@@ -21,7 +21,8 @@ class Symbol  implements MultiTenant<Symbol>  {
   ]
 
   static belongsTo = [
-    owner: DirectoryEntry
+    owner: DirectoryEntry,
+    authority: NamingAuthority
   ]
 
   static mapping = {
