@@ -27,6 +27,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String emailAddress
   String contactName
 
+  @Defaults(['Consortium', 'Institution', 'Branch'])
+  RefdataValue type
+
   // If the location corresponds to a location in a host LMS, record that
   // code here - "MAIN" is a common example
   String lmsLocationCode
@@ -85,6 +88,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
         phoneNumber column:'de_phone_number'
        emailAddress column:'de_email_address'
         contactName column:'de_contact_name'
+               type column:'de_type'
   }
 
   static constraints = {
@@ -102,6 +106,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
         phoneNumber(nullable:true, blank:false)
        emailAddress(nullable:true, blank:false)
       contactNumber(nullable:true, blank:false)
+               type(nullable:true)
 
   }
 

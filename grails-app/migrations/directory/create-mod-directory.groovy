@@ -687,4 +687,11 @@ databaseChangeLog = {
     changeSet(author: "sosguthorpe (generated)", id: "1560352943887-80") {
         addForeignKeyConstraint(baseColumnNames: "tag_id", baseTableName: "directory_entry_tag", constraintName: "FKt8qbn40lvi5a2hi726uqc5igv", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "tag")
     }
+
+    changeSet(author: "ethanfreestone (manual)", id: "202004031014-001") {
+        addColumn(tableName: "directory_entry") {
+            column(name: "de_type", type: "VARCHAR(36)")
+        }
+    }
+
 }
