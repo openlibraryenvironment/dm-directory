@@ -27,6 +27,17 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String emailAddress
   String contactName
 
+  // This field is used to store a parsed version of the last modified time as harvested
+  // from a remote server. It can be used to work out if a remote system thinks that
+  // the directory entry has changed since the last time we visited. Its used to make it
+  // more efficient for us to regularly poll the network of directory entries and be able to
+  // quickly discard records that have not changed. The naming is slightly clunky to avoid
+  // confusing with the lastUpdate field that could be applied to _this_ record.
+  Long pubLastUpdate
+
+  @Defaults(['Consortium', 'Institution', 'Branch'])
+  RefdataValue type
+
   // If the location corresponds to a location in a host LMS, record that
   // code here - "MAIN" is a common example
   String lmsLocationCode
@@ -84,11 +95,13 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
            entryUrl column:'de_entry_url'
       foafTimestamp column:'de_foaf_timestamp'
     lmsLocationCode column:'de_lms_location_code'
-              tags cascade:'save-update'
-          services cascade:'save-update'
         phoneNumber column:'de_phone_number'
        emailAddress column:'de_email_address'
         contactName column:'de_contact_name'
+               type column:'de_type_rv_fk'
+      pubLastUpdate column:'de_published_last_update'
+              tags cascade:'save-update'
+          services cascade:'save-update'
   }
 
   static constraints = {
@@ -107,6 +120,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
         phoneNumber(nullable:true, blank:false)
        emailAddress(nullable:true, blank:false)
         contactName(nullable:true, blank:false)
+      contactNumber(nullable:true, blank:false)
+               type(nullable:true)
+      pubLastUpdate(nullable:true)
   }
 
   /**

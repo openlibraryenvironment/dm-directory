@@ -694,7 +694,6 @@ databaseChangeLog = {
             column(name: "de_email_address", type: "VARCHAR(255)");
             column(name: "de_contact_name", type: "VARCHAR(255)");
         }
-
     }
 
     changeSet(author: "ianibbo (generated)", id: "20200331-1432-01") {
@@ -702,4 +701,15 @@ databaseChangeLog = {
         addUniqueConstraint(columnNames: "norm_value", constraintName: "unique_tag", tableName: "tag")
     }
 
+    changeSet(author: "ethanfreestone (manual)", id: "202004031014-001") {
+        addColumn(tableName: "directory_entry") {
+            column(name: "de_type_rv_fk", type: "VARCHAR(36)")
+        }
+    }
+
+    changeSet(author: "ianibbo (manual)", id: "20191115-1348-001") {
+        addColumn(tableName: "directory_entry") {
+            column(name: "de_published_last_update", type: "BIGINT");
+        }
+    }
 }
