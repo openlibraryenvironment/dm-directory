@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "1.1.13"
+version "1.1.14-SNAPSHOT"
 group "org.olf.reshare.dm.directory"
 
 apply plugin:"eclipse"
@@ -102,7 +102,7 @@ bootRepackage.enabled = false
 publishing {
   repositories {
     maven {
-      url "http://nexus.k-int.com/content/repositories/releases/"
+      url "https://nexus.k-int.com/content/repositories/releases/"
       credentials {
         username project.hasProperty('knowintNexusUser') ? knowintNexusUser :''
         password project.hasProperty('knowintNexusPass') ? knowintNexusPass :''
