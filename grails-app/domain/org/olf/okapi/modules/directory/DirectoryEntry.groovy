@@ -46,7 +46,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
 
   DirectoryEntry parent
 
-  @BindImmutably
+//  @BindImmutably
   Set<Tag> tags = []
 
 
