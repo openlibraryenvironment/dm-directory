@@ -27,7 +27,7 @@ class Address  implements MultiTenant<Address>  {
                  id column:'addr_id', generator: 'uuid2', length:36
        addressLabel column:'addr_label'
                tags cascade:'save-update'
-           adresses cascade: 'all-delete-orphan'
+              lines cascade:'all-delete-orphan'
   }
 
   static constraints = {
