@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "1.1.15-SNAPSHOT"
+version "1.1.16-SNAPSHOT"
 group "org.olf.reshare.dm.directory"
 
 //apply plugin:"eclipse"
