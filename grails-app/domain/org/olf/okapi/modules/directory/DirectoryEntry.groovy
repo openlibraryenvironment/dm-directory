@@ -103,7 +103,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
               tags cascade:'save-update'
              units cascade:'save-update'
           services cascade:'all-delete-orphan'
-          adresses cascade:'all-delete-orphan'
+         addresses cascade:'all-delete-orphan'
            members cascade:'all-delete-orphan'
            symbols cascade:'all-delete-orphan'
            friends cascade:'all-delete-orphan'
