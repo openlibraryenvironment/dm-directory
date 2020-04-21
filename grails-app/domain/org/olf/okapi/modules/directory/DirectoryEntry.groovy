@@ -76,7 +76,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     symbols: 'owner',
     services: 'accountHolder',
     announcements: 'owner',
-    addresses: 'owner',   
+    addresses: 'owner',
     members: 'groupOrg'
   ]
 
@@ -89,7 +89,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
                name column:'de_name'
                slug column:'de_slug'
         description column:'de_desc'
-             parent column:'de_parent'
+             parent column:'de_parent', cascade:'save-update'
              status column:'de_status_fk'
             foafUrl column:'de_foaf_url'
            entryUrl column:'de_entry_url'
@@ -101,7 +101,13 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
                type column:'de_type_rv_fk'
       pubLastUpdate column:'de_published_last_update'
               tags cascade:'save-update'
-          services cascade:'save-update'
+             units cascade:'save-update'
+          services cascade:'all-delete-orphan'
+         addresses cascade:'all-delete-orphan'
+           members cascade:'all-delete-orphan'
+           symbols cascade:'all-delete-orphan'
+           friends cascade:'all-delete-orphan'
+     announcements cascade:'all-delete-orphan'
   }
 
   static constraints = {
