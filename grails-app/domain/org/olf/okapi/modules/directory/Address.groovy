@@ -32,5 +32,6 @@ class Address  implements MultiTenant<Address>  {
 
   static constraints = {
     addressLabel(nullable:false, blank:false)
+           owner(nullable:true)
   }
 }
