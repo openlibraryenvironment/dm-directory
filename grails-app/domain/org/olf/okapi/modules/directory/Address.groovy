@@ -9,6 +9,7 @@ class Address  implements MultiTenant<Address>  {
 
   String id
   String addressLabel
+  String countryCode
 
   static hasMany = [
     lines: AddressLine,
@@ -26,6 +27,7 @@ class Address  implements MultiTenant<Address>  {
   static mapping = {
                  id column:'addr_id', generator: 'uuid2', length:36
        addressLabel column:'addr_label'
+        countryCode column: 'addr_country_code'
                tags cascade:'save-update'
               lines cascade:'all-delete-orphan'
   }

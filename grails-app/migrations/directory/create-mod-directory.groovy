@@ -712,4 +712,10 @@ databaseChangeLog = {
             column(name: "de_published_last_update", type: "BIGINT");
         }
     }
+
+    changeSet(author: "efreestone (manual)", id: "20200514-1440-001") {
+        addColumn(tableName: "address") {
+            column(name: "addr_country_code", type: "VARCHAR(15)");
+        }
+    }
 }
