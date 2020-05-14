@@ -9,6 +9,12 @@ class Address  implements MultiTenant<Address>  {
 
   String id
   String addressLabel
+
+  /*
+   * For the purposes of properly internationalisable addresses, this field should be filled with
+   * ISO 3166-2 standard country codes, such as DEU or GB-ENG.
+   * The AddressLine 'country' would then be filled with 'Deutschland' or 'Germany' depending on sender's locale
+   */
   String countryCode
 
   static hasMany = [
