@@ -39,6 +39,9 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
              'SRW'])
   RefdataValue type
 
+  @Defaults(['Managed', 'Reference'])
+  RefdataValue status
+
   /**
    * The business function served - if I want to list all services providing ILL, query this for ILL
    */
@@ -57,6 +60,7 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
                 name column:'se_name'
              address column:'se_address'
                 type column:'se_type_fk'
+              status column:'se_status_fk'
     businessFunction column:'se_business_function_fk'
                 tags cascade:'save-update'
   }
@@ -64,6 +68,7 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
   static constraints = {
                 name(nullable:true, blank:false)
                 type(nullable:false)
+              status(nullable:true)
              address(nullable:false, blank:false)
     businessFunction(nullable:true)
   }
