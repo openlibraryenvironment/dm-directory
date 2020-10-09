@@ -15,6 +15,14 @@ podTemplate(
   
     stage ('checkout') {
       checkout scm
+      props = readProperties file: './gradle.properties'
+      app_version = props.appVersion
+      deploy_cfg = null;
+      semantic_version_components = app_version.toString().split('\\.')
+      is_snapshot = app_version.contains('SNAPSHOT')
+      println("Got props: asString:${props} appVersion:${props.appVersion}/${props['appVersion']}/${semantic_version_components}");
+      sh 'echo branch:$BRANCH_NAME'
+      sh 'echo commit:$checkout_details.GIT_COMMIT'
     }
   
     stage ('check') {
@@ -33,13 +41,11 @@ podTemplate(
     }
   
     stage ('publish') {
-        def props = readProperties file: 'gradle.properties'
         def target_repository = null;
         println("Props: ${props}");
         def release_files = findFiles(glob: '**/dm-directory-*.*.*.jar')
         println("Release Files: ${release_files}");
         if ( release_files.size() == 1 ) {
-          // println("Release file : ${release_files[0].name}");
           if ( release_files[0].name.contains('SNAPSHOT') ) {
             target_repository='snapshots';
           }
