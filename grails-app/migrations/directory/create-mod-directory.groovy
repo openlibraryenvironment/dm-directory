@@ -728,4 +728,11 @@ databaseChangeLog = {
     changeSet(author: "efreestone (manual)", id: "202006171030-01") {
         addForeignKeyConstraint(baseColumnNames: "se_status_fk", baseTableName: "service", constraintName: "FK-service-status", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "rdv_id", referencedTableName: "refdata_value")
     }
+
+    changeSet(author: "ianibbo (manual)", id: "20210720-1500-001") {
+        addColumn(tableName: "directory_entry") {
+            column(name: "de_branding_url", type: "VARCHAR(255)");
+        }
+    }
+
 }
