@@ -27,6 +27,9 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   String emailAddress
   String contactName
 
+  // URL of an SVG file used for branding relating to this directory entry
+  String brandingUrl
+
   // This field is used to store a parsed version of the last modified time as harvested
   // from a remote server. It can be used to work out if a remote system thinks that
   // the directory entry has changed since the last time we visited. Its used to make it
@@ -93,6 +96,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
              status column:'de_status_fk'
             foafUrl column:'de_foaf_url'
            entryUrl column:'de_entry_url'
+        brandingUrl column:'de_branding_url'
       foafTimestamp column:'de_foaf_timestamp'
     lmsLocationCode column:'de_lms_location_code'
         phoneNumber column:'de_phone_number'
@@ -121,6 +125,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
              status(nullable:true)
             foafUrl(nullable:true, blank:false)
            entryUrl(nullable:true, blank:false)
+        brandingUrl(nullable:true, blank:false)
       foafTimestamp(nullable:true)
     lmsLocationCode(nullable:true)
         phoneNumber(nullable:true, blank:false)
