@@ -135,6 +135,13 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
       pubLastUpdate(nullable:true)
   }
 
+  // Propagate any last update data to all parent records
+  public void setPubLastUpdate(long pubLastUpdate) {
+    this.pubLastUpdate = pubLastUpdate;
+    if ( parent != null )
+      parent.setPubAstUpdate(pubLastUpdate);
+  }
+
   /**
   * Search through the parent tree to find out if this directory entry appears as its own parent along the line
   * @return null if there are no parental loops, string saying "Cycle Detected" otherwise
