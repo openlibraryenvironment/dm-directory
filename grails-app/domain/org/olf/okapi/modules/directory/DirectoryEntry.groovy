@@ -136,7 +136,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   }
 
   // Propagate any last update data to all parent records
-  public void setPubLastUpdate(long pubLastUpdate) {
+  public void setPubLastUpdate(Long pubLastUpdate) {
     this.pubLastUpdate = pubLastUpdate;
     if ( parent != null )
       parent.setPubAstUpdate(pubLastUpdate);
