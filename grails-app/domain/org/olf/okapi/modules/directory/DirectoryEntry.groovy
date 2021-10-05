@@ -139,7 +139,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
   public void setPubLastUpdate(Long pubLastUpdate) {
     this.pubLastUpdate = pubLastUpdate;
     if ( parent != null )
-      parent.setPubAstUpdate(pubLastUpdate);
+      parent.setPubLastUpdate(pubLastUpdate);
   }
 
   /**
