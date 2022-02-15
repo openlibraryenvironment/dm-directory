@@ -29,7 +29,7 @@ class Symbol  implements MultiTenant<Symbol>  {
                  id column:'sym_id', generator: 'uuid2', length:36
               owner column:'sym_owner_fk'
           authority column:'sym_authority_fk'
-             symbol column:'sym_symbol'
+             symbol column:'sym_symbol', unique: 'authority'
            priority column:'sym_priority'
   }
 
