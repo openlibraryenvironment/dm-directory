@@ -36,9 +36,9 @@ class ServiceAccount  implements CustomProperties,MultiTenant<ServiceAccount>  {
   }
 
   static constraints = {
-              slug(nullable:false, blank:false, unique:true)
-           service(nullable:false, blank:false)
-     accountHolder(nullable:false, blank:false)
+               slug(nullable:false, blank:false, unique:true)
+            service(nullable:false)
+      accountHolder(nullable:false, blank:false)
      accountDetails(nullable:true, blank:false)
   }
 }
