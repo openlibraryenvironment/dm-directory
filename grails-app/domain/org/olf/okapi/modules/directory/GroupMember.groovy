@@ -39,8 +39,8 @@ class GroupMember  implements MultiTenant<GroupMember>,CustomProperties  {
   }
 
   static constraints = {
-              groupOrg(nullable:false, blank:false)
-             memberOrg(nullable:false, blank:false)
+              groupOrg(nullable:false)
+             memberOrg(nullable:false)
   }
 
 }

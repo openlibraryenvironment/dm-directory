@@ -35,7 +35,7 @@ class AddressLine  implements MultiTenant<AddressLine>  {
 
   static constraints = {
           seq(nullable:false, blank:false)
-         type(nullable:false, blank:false)
+         type(nullable:false)
         value(nullable:false, blank:false)
 
   }

@@ -26,7 +26,7 @@ class FriendAssertion  implements MultiTenant<DirectoryEntry>  {
   }
 
   static constraints = {
-           owner(nullable:false, blank:false)
-      friend_org(nullable:false, blank:false)
+           owner(nullable:false)
+      friend_org(nullable:false)
   }
 }
