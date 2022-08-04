@@ -735,4 +735,18 @@ databaseChangeLog = {
         }
     }
 
+    changeSet(author: "ianibbo (manual)", id: "20220804-1331-001") {
+        createTable(tableName: "signing_key") {
+            column(name: "sk_id", type: "VARCHAR(36)") { constraints(nullable: "false") }
+            column(name: "version", type: "BIGINT") { constraints(nullable: "false") }
+            column(name: "sk_owner_fk", type: "VARCHAR(36)") { constraints(nullable: "false") }
+            column(name: "sk_valid_from", type: "DATE")
+            column(name: "sk_valid_to", type: "DATE")
+            column(name: "sk_name", type: "VARCHAR(128)")
+            column(name: "sk_public_key", type: "TEXT")
+            column(name: "sk_private_key", type: "TEXT")
+        }
+    }
+
+
 }

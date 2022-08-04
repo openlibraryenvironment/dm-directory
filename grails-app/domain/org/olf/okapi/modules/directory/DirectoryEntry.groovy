@@ -70,7 +70,8 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     services: ServiceAccount,
     announcements: Announcement,
     addresses: Address,
-    members: GroupMember
+    members: GroupMember,
+    keys: Key
   ]
 
   static mappedBy = [
@@ -80,7 +81,8 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     services: 'accountHolder',
     announcements: 'owner',
     addresses: 'owner',
-    members: 'groupOrg'
+    members: 'groupOrg',
+    keys: 'owner'
   ]
 
   static belongsTo = [
@@ -112,6 +114,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
            symbols cascade:'all-delete-orphan'
            friends cascade:'all-delete-orphan'
      announcements cascade:'all-delete-orphan'
+              keys cascade:'all-delete-orphan'
   }
 
   static constraints = {
