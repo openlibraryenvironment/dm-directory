@@ -71,7 +71,7 @@ class DirectoryEntry  implements MultiTenant<DirectoryEntry>,CustomProperties  {
     announcements: Announcement,
     addresses: Address,
     members: GroupMember,
-    keys: Key
+    keys: SigningKey
   ]
 
   static mappedBy = [
