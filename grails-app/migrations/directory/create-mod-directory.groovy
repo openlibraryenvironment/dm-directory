@@ -735,4 +735,7 @@ databaseChangeLog = {
         }
     }
 
+    changeSet(author: "jskomorowski (manual)", id: "20211119-1700-001") {
+        addPrimaryKey(columnNames: "directory_entry_tags_id, tag_id", constraintName: "directory_entry_tagPK", tableName: "directory_entry_tag")
+    }
 }
