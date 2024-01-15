@@ -88,10 +88,11 @@ sourceSets {
 publishing {
   repositories {
     maven {
-      url "https://nexus.k-int.com/content/repositories/releases/"
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/openlibraryenvironment/dm-directory"
       credentials {
-        username project.hasProperty('knowintNexusUser') ? knowintNexusUser :''
-        password project.hasProperty('knowintNexusPass') ? knowintNexusPass :''
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
       }
     }
   }

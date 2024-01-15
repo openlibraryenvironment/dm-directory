@@ -16,9 +16,9 @@ dm-directory is an internal storage schema for representing directory informatio
 
 For reasons, we have had to seriously adjust the conventional behaviour of hibernate in order to make the natural IDs of an entry in mod-directory the same as it's appearence in other modules. Ideally we would not do this - and would use a synthetic identifier any place we needed to reference an entry. This single requirement is responsible for 90% of the pain and dirt in this module. I can only apologize for making what should have been simple and elegant into a rats nest.
 
-# Building
+# Release procedure
 
-As of 2.0.0-SNAPSHOT this library is built by jenkins and deployed to nexus for consumption by downstream modules. Snapshots and release artifacts are deployed to different repos.
+GitHub actions publishes this to the Github Packages repository. To trigger publishing an artifact, create and publish a release in github.
 
 # Legacy
 
