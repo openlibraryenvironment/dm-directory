@@ -45,7 +45,7 @@ class Service  implements CustomProperties,MultiTenant<Service>  {
   /**
    * The business function served - if I want to list all services providing ILL, query this for ILL
    */
-  @Defaults(['ILL','CIRC','RTAC','HARVEST', 'RS_STATS', 'SLNP_GATEWAY'])
+  @Defaults(['ILL','CIRC','RTAC','HARVEST', 'RS_STATS'])
   RefdataValue businessFunction
 
   static hasMany = [
