@@ -89,7 +89,7 @@ publishing {
   repositories {
     maven {
       name = "ID Reposilite"
-      url = "https://reposilite.reshare.indexdata.com/releases/dm-directory"
+      url = "https://reposilite.reshare.indexdata.com/releases"
       credentials {
         username = System.getenv("PUBLISH_USER")
         password = System.getenv("PUBLISH_PASSWORD")
