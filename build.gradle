@@ -91,8 +91,8 @@ publishing {
       name = "ID Reposilite"
       url = "https://reposilite.reshare.indexdata.com/releases/dm-directory"
       credentials {
-        username = System.getenv("secrets.REPOSILITE_USERNAME")
-        password = System.getenv("secrets.REPOSILITE_PASSWORD")
+        username = System.getenv("PUBLISH_USER")
+        password = System.getenv("PUBLISH_PASSWORD")
       }
     }
   }
